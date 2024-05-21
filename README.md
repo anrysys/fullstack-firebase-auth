@@ -37,6 +37,8 @@ NEXT_PUBLIC_FIREBASE_API_KEY=your-api-key
 NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-auth-domain
 NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-project-id
 ```
+Либо переименуйте файл `example.env.local` в `.env.local` и введите в нем ваши данные для аутентификации.Alternatively, rename the `example.env.local` file to `.env.local` and enter your authentication information in it.
+
 
 4. Start the server:
 
