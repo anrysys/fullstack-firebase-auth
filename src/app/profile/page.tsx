@@ -1,44 +1,45 @@
 "use client";
+
 import SubmitButton from "@/components/Button";
 import InputField from "@/components/InputField";
 import useAuthentication from "@/hooks/useAuthentication";
 import { AuthContext } from "@/provider/AuthProvider";
-import { profilePasswordValidation, profileValidation } from "@/validationSchema/profile";
+import { useProfilePasswordValidation, useProfileValidation } from "@/validationSchema/useProfile";
 import { updatePassword, updateProfile } from "firebase/auth";
 import { useState } from "react";
 
 const Profile = () => {
     useAuthentication();
-    const {handleSubmit,register, formState:{errors}} = profileValidation();
+    const { handleSubmit, register, formState: { errors } } = useProfileValidation();
 
-    const {handleSubmit:passwordHandleSubmit, register: registerPassword, formState:{errors:passwordErrors}} = profilePasswordValidation();
-    const {user}:any = AuthContext();
+    const { handleSubmit: passwordHandleSubmit, register: registerPassword, formState: { errors: passwordErrors } } = useProfilePasswordValidation();
+    const { user }: any = AuthContext();
 
     const [visibleForm, setVisibility] = useState<any>();
 
     const userInfo = user.user;
 
-    const submitForm = async({name, photo}:{name ?:string | null, photo ?:string | null }) => {
-        if(name && photo){
-            updateProfile(userInfo,{
-                displayName:name,
-                photoURL:photo
-            }).then((response)=>{
+    const submitForm = async ({ name, photo }: { name?: string | null, photo?: string | null }) => {
+        if (name && photo) {
+            updateProfile(userInfo, {
+                displayName: name,
+                photoURL: photo
+            }).then((response) => {
                 console.log("profile updated");
                 setVisibility("");
-            }).catch((e)=>{
-                console.log("failed to update profile ",e.message)
+            }).catch((e) => {
+                console.log("failed to update profile ", e.message)
             })
         }
     }
 
-    const submitPasswordForm  = ({password}:{password?:string|null}) =>{
-        if(password){
-            updatePassword(userInfo,password).then((response)=>{
+    const submitPasswordForm = ({ password }: { password?: string | null }) => {
+        if (password) {
+            updatePassword(userInfo, password).then((response) => {
                 console.log("password changed");
                 setVisibility("");
-            }).catch((e)=>{
-                console.log("failed to changes password ",e.message)
+            }).catch((e) => {
+                console.log("failed to changes password ", e.message)
             })
         }
     }
@@ -56,8 +57,8 @@ const Profile = () => {
                 </div>
 
                 <div className="flex w-full items-center justify-around my-4">
-                    <span className=" cursor-pointer py-1 px-2 bg-yellow-400 rounded-md" onClick={()=>setVisibility("profile")}>Update Profile</span>
-                    <span className=" cursor-pointer py-1 px-2 bg-yellow-400 rounded-md"  onClick={()=>setVisibility("password")}>Change Password</span>
+                    <span className=" cursor-pointer py-1 px-2 bg-yellow-400 rounded-md" onClick={() => setVisibility("profile")}>Update Profile</span>
+                    <span className=" cursor-pointer py-1 px-2 bg-yellow-400 rounded-md" onClick={() => setVisibility("password")}>Change Password</span>
                 </div>
 
                 {visibleForm === 'profile' &&
@@ -65,7 +66,7 @@ const Profile = () => {
                         <div className="h-28 w-full justify-center flex items-center">
                             <span className="text-3xl text-black font-mono font-semibold bg-yellow-300 p-3 rounded-lg">Update Profile</span>
                         </div>
-                        
+
                         <form onSubmit={handleSubmit(submitForm)} className="h-full w-1/2 mx-auto ">
                             <InputField
                                 register={register}
@@ -88,22 +89,22 @@ const Profile = () => {
                     </>
                 }
                 {visibleForm === 'password' &&
-                <>
-                    <div className="h-28 w-full justify-center flex items-center">
-                        <span className="text-3xl text-black font-mono font-semibold bg-yellow-300 p-3 rounded-lg">Change Password</span>
-                    </div>
-                    <form onSubmit={passwordHandleSubmit(submitPasswordForm)} className="h-full w-1/2 mx-auto ">
-                        <InputField
-                            register={registerPassword}
-                            error={passwordErrors.password}
-                            type="password"
-                            placeholder="Enter Your Password Here..."
-                            name="password"
-                            label="Password"
-                        />
-                        <SubmitButton label="Update" />
-                    </form>
-                </>
+                    <>
+                        <div className="h-28 w-full justify-center flex items-center">
+                            <span className="text-3xl text-black font-mono font-semibold bg-yellow-300 p-3 rounded-lg">Change Password</span>
+                        </div>
+                        <form onSubmit={passwordHandleSubmit(submitPasswordForm)} className="h-full w-1/2 mx-auto ">
+                            <InputField
+                                register={registerPassword}
+                                error={passwordErrors.password}
+                                type="password"
+                                placeholder="Enter Your Password Here..."
+                                name="password"
+                                label="Password"
+                            />
+                            <SubmitButton label="Update" />
+                        </form>
+                    </>
                 }
             </div>
         </div>

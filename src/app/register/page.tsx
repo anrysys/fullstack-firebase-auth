@@ -4,7 +4,7 @@ import InputField from "@/components/InputField";
 import { LOGIN_ROUTE, PROFILE_ROUTE } from "@/constants/routes";
 import useAuthentication from "@/hooks/useAuthentication";
 import { auth } from "@/services/firebase";
-import { registerValidation } from "@/validationSchema/auth";
+import { useRegisterValidation } from "@/validationSchema/useAuth";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 const Register = () => {
     const router = useRouter();
     useAuthentication();
-    const { handleSubmit, register, formState:{errors}, reset} = registerValidation();
+    const { handleSubmit, register, formState:{errors}, reset} = useRegisterValidation();
     const submitForm = async(values:any) => {
         console.log("Register form values",values)
         createUserWithEmailAndPassword(auth,values.email,values.password).then((response)=>{

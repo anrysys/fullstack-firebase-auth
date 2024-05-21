@@ -18,7 +18,7 @@ const useAuthentication = () => {
         if(userInfo && GUEST_ROUTES.includes(currentRoute)){
             router.push(PROFILE_ROUTE);
         }
-    },[]);
+    },[currentRoute, router, userInfo]);
 
 }
 
