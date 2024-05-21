@@ -4,6 +4,11 @@
 
 ## Features
 
+- **User registration and login**: Users can register and login with email and password.
+- **Profile management**: Users can update their profile information, including name and photo URL.
+- **Password change**: Users can change their password.
+- **Firebase integration**: The application uses Firebase for authentication and data storage.
+- **TypeScript**: The codebase is written in TypeScript for type safety and better maintainability.
 - **Next.js**: A React framework for building JavaScript applications with server-side rendering and static site generation.
 - **Firebase Authentication**: A service that provides backend services, easy-to-use SDKs, and ready-made UI libraries to authenticate users to your app.
 - **React**: A JavaScript library for building user interfaces.
