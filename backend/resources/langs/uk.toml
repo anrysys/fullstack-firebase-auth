@@ -1,0 +1,107 @@
+[AccountIsBlocked]
+hash = "sha1-4ccfde0dce7facc2ba38f0b9137584f9b1c8dfc9"
+other = "На жаль, ваш обліковий запис заблоковано!"
+
+[AccountIsDeleted]
+hash = "sha1-fd53afcc11e046aaf5b9407ed272f66247600673"
+other = "На жаль, ваш обліковий запис заблоковано і буде видалено через 1 місяць!"
+
+[AccountIsPending]
+hash = "sha1-d5591f9d6b28431cce68dba349c0279bf8768571"
+other = "Ваш обліковий запис ще не активовано! Будь ласка, спробуйте ще раз пізніше..."
+
+[AccountIsRejected]
+hash = "sha1-1ac612d08cfb6ff792dd3c37ea12882fbc8d111b"
+other = "На жаль, ваш запит на реєстрацію облікового запису було відхилено!"
+
+[CodeSuccessfullyAddeded]
+hash = "sha1-746abe3b831010bf7505447a8dac11b5521f7f14"
+other = "Код успішно додано!"
+
+[CouldNotRefreshAccessToken]
+hash = "sha1-2eff617162f3e1016c8b08ac9b6617a50a7aacac"
+other = "Не вдалося оновити маркер доступу"
+
+[ErrorAttemptExceeded]
+hash = "sha1-560404ad6d7f340f5d465c213a5b8b685b32e2bf"
+other = "Кількість спроб введення коду перевищена. Будь ласка, спробуйте пізніше..."
+
+[HelloPerson]
+hash = "sha1-5b49bfdad81fedaeefb224b0ffc2acc58b09cff5"
+other = "Привіт {{.Name}}"
+
+[HttpStatusForbidden]
+hash = "sha1-34b36f3511825af0665ea3c55918ba9bf8ad11d0"
+other = "У вас немає доступу для виконання цієї операції"
+
+[InvalidEmailOrPassword]
+hash = "sha1-c0494cb3595504b9c4455642e3f2ced99208de22"
+other = "Невірна адреса електронної пошти або пароль"
+
+[InvalidOtpCode]
+hash = "sha1-5299f10b448b2d050d5dfb2f5f5358f74783dbb6"
+other = "Недійсний код OTP!"
+
+[LogoutSuccessful]
+hash = "sha1-6dc594152277d07a1a904d577e9c88e83ebefe46"
+other = "Ви успішно вийшли!"
+
+[MessageOtpCode]
+hash = "sha1-e236da367875e381e9d352b183f1833b0a1408d0"
+other = "Привіт, <b>{{.Customer}}</b>!<br />Код: <b>{{.OtpCode}}</b>!<br />Скопіюйте його та вставте у поле для перевірки.<br />Не показуйте цей код нікому!<hr><small><i>З найкращими побажаннями, команда my-domain!</small></i>"
+
+[MyUnreadEmails]
+description = "The number of unread emails I have"
+few = "У мене є {{.PluralCount}} непрочитаних листів."
+hash = "sha1-6a65d17f53981a3657db1897630e9cb069053ea8"
+many = "У мене є {{.PluralCount}} непрочитаних листів."
+one = "У мене є {{.PluralCount}} непрочитаний лист."
+other = "У мене є {{.PluralCount}} непрочитаних листів."
+
+[PasswordDoNotMatch]
+hash = "sha1-be53d2a7a410b4574e7930edf0a1e39519fab263"
+other = "Паролі не збігаються!"
+
+[PersonUnreadEmails]
+description = "The number of unread emails a person has"
+few = "{{.Name}} має {{.UnreadEmailCount}} непрочитаних листів."
+hash = "sha1-3a672fa89c5c8564bb233c907638004983792464"
+many = "{{.Name}} має {{.UnreadEmailCount}} непрочитаних листів."
+one = "{{.Name}} має {{.UnreadEmailCount}} непрочитаний лист."
+other = "{{.Name}} має {{.UnreadEmailCount}} непрочитаних листів."
+
+[RegisterUserConglaturation]
+hash = "sha1-059e9f17b44920cca35a4db2493ecd95a3f4fc36"
+other = "Вітаємо! Ваш обліковий запис успішно створено!"
+
+[SavedSuccessfully]
+hash = "sha1-f94b4a6ddbc14cfd7d2461bc678d30431ae3164a"
+other = "Успішно збережено!"
+
+[ServerStatusMethodNotAllowed]
+hash = "sha1-c89a28ca7f00c6445bf75e4838452b1bf8dfbfb1"
+other = "Метод не дозволений!"
+
+[SometingWentWrongServer]
+hash = "sha1-827def211c477b74d165ea3383749495fb13366a"
+other = "Щось пішло не так на сервері"
+
+[SubjectOtpCode]
+hash = "sha1-165cd630448c7dbca1686c47fc19e57d3cfc77b0"
+other = "Ваш код підтвердження: {{.OtpCode}}"
+
+[TheUserBelongingToThisTokenNoLoggerExists]
+hash = "sha1-672a189f5ef8bc2b467852b73c68130f445e0a3e"
+other = "Користувач, якому належить цей токен, не існує"
+
+[TokenIsInvalidOrSessionHasExpired]
+hash = "sha1-236fa783a2b02638258967d30254524073036f5a"
+other = "Токен недійсний або термін дії сесії закінчився"
+
+[UserEmailExist]
+hash = "sha1-62f1cfa426fa365b5f8f342c7235f13ee2e81c65"
+other = "Користувач з такою електронною поштою вже існує"
+
+[YouAreNotLoggedIn]
+hash = "sha1-9fa31ae39832afa8a79935fc89a046c27cab0a54"
+other = "Ви не увійшли в систему"

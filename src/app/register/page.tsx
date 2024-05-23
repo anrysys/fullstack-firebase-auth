@@ -14,10 +14,18 @@ const Register = () => {
     useAuthentication();
     const { handleSubmit, register, formState:{errors}, reset} = useRegisterValidation();
     const submitForm = async(values:any) => {
+        
         console.log("Register form values",values)
+        // {email: 'anry@hackstay.com', password: '12345678', cnfPassword: '12345678'}
+
         createUserWithEmailAndPassword(auth,values.email,values.password).then((response)=>{
             alert("User Register Successfully");
             reset();
+
+
+            //! Save in local db via restful api
+
+
             router.push(PROFILE_ROUTE)
         }).catch(e=>{
             console.log("catch ",e.message);

@@ -10,11 +10,42 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const Login = () => {
-    const { handleSubmit, register, formState: { errors } } = useLoginValidation();
+    const { handleSubmit, register, formState: { errors }, reset } = useLoginValidation();
     const router = useRouter();
     useAuthentication();
     const submitForm = (values: any) => {
-        signInWithEmailAndPassword(auth, values.email, values.password).then((response) => {
+
+        // Fetch locale from user browser & set it to the values object
+        const locale = navigator.language; // "en-US"
+        const lang = locale.slice(0, 2); // "en"
+        values.lang = lang;
+        const { email, password } = values;
+
+        signInWithEmailAndPassword(auth, values.email, values.password).then(async (objResponseFromFirebase) => {
+
+            // Add objResponseFromFirebase to values
+            values.user = objResponseFromFirebase.user;
+            // console.log("objResponseFromFirebase + values ", values);
+
+            // Save the authentication result to the RESTful API
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(values),
+            });
+            //console.log("response FROM API", response);
+
+            if (response.ok) {
+                alert("User Login Successfully");
+                reset();
+                router.push(PROFILE_ROUTE);
+            } else {
+                console.log("catch ", response.statusText);
+                alert("Something went wrong please try again");
+                //throw new Error('Failed to save authentication result to the RESTful API');
+            }
             router.push(PROFILE_ROUTE);
         }).catch((e) => {
             console.log("Login Error ", e.message);

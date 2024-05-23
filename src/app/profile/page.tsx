@@ -9,14 +9,13 @@ import { updatePassword, updateProfile } from "firebase/auth";
 import { useState } from "react";
 
 const Profile = () => {
-    useAuthentication();
-    const { handleSubmit, register, formState: { errors } } = useProfileValidation();
 
+    useAuthentication();
+
+    const { handleSubmit, register, formState: { errors } } = useProfileValidation();
     const { handleSubmit: passwordHandleSubmit, register: registerPassword, formState: { errors: passwordErrors } } = useProfilePasswordValidation();
     const { user }: any = AuthContext();
-
     const [visibleForm, setVisibility] = useState<any>();
-
     const userInfo = user.user;
 
     const submitForm = async ({ name, photo }: { name?: string | null, photo?: string | null }) => {
@@ -48,7 +47,7 @@ const Profile = () => {
         <div className="h-screen max:h-screen-auto flex justify-center items-center bg-gradient-to-br from-yellow-400/20 via-blue-300 to-purple-400/60">
             <div className="w-1/2 rounded-md bg-white/30 shadow-lg flex justify-between flex-col">
                 <div className="h-28 w-full justify-center flex items-center">
-                    <span className="text-3xl text-black font-mono font-semibold bg-yellow-300 p-3 rounded-lg">Welcome Back Vijay</span>
+                    <span className="text-3xl text-black font-mono font-semibold bg-yellow-300 p-3 rounded-lg">Welcome Back {userInfo?.email}</span>
                 </div>
                 <div className="flex items-start justify-evenly flex-col w-1/2 self-center ">
                     <div className="text-black font-bold text-lg">Email: {userInfo?.email}</div>
