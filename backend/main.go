@@ -11,6 +11,10 @@ import (
 
 	"github.com/BurntSushi/toml"
 
+	"context"
+
+	firebase "firebase.google.com/go/v4"
+	"firebase.google.com/go/v4/appcheck"
 	json "github.com/bytedance/sonic"
 	"github.com/gofiber/contrib/fiberi18n"
 	"github.com/gofiber/fiber/v2"
@@ -23,9 +27,14 @@ import (
 
 //var Conf *configs.Config
 
+var (
+	appCheckClient *appcheck.Client
+)
+
 func init() {
 
 	global.LoadConfig(".")
+
 }
 
 func main() {
@@ -34,6 +43,37 @@ func main() {
 		JSONEncoder: json.Marshal,
 		JSONDecoder: json.Unmarshal,
 	})
+
+	// Initialize Firebase App with App Check
+	firebaseApp, err := firebase.NewApp(context.Background(), nil)
+	if err != nil {
+		log.Fatalf("error initializing app: %v\n", err)
+	}
+
+	// Initialize App Check client
+	appCheckClient, err = firebaseApp.AppCheck(context.Background())
+	if err != nil {
+		log.Fatalf("error initializing app check: %v\n", err)
+	}
+
+	// Middleware to check App Check token
+	app.Use(func(c *fiber.Ctx) error {
+		appCheckToken := c.Get("X-Firebase-AppCheck")
+
+		println(appCheckToken)
+
+		if appCheckToken == "" {
+			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "fail", "errors": "Unauthorized"})
+		}
+
+		_, err := appCheckClient.VerifyToken(appCheckToken)
+		if err != nil {
+			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "fail", "errors": "Unauthorized"})
+		}
+
+		return c.Next()
+	})
+
 	micro := fiber.New(fiber.Config{
 		JSONEncoder: json.Marshal,
 		JSONDecoder: json.Unmarshal,

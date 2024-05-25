@@ -11,40 +11,6 @@ const Header = () => {
     const router = useRouter();
     const logOut = () => {
         signOut(auth).then(async (objResponseFromFirebase) => {
-
-        // // Fetch locale from user browser & set it to the values object
-        // const values: any = {}; // Declare the 'values' variable
-        // const locale = navigator.language; // "en-US"
-        // const lang = locale.slice(0, 2); // "en"
-        // values.lang = lang;
-       
-         console.log("Logout: objResponseFromFirebase", objResponseFromFirebase);
-        // values.user = objResponseFromFirebase.user;
-        // values.user.isLogin = false;
-        // values.user.email = "";
-        // values.user.password = "";
-
-        // console.log("values + objResponseFromFirebase ", values);
-        // Save the authentication result to the RESTful API
-        const response = await fetch('/api/auth/logout', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            //body: JSON.stringify(objResponseFromFirebase),
-        });
-            //console.log("response FROM API", response);
-
-            // if (response.ok) {
-            //     alert("User Logout Successfully");
-
-            //     router.push(PROFILE_ROUTE);
-            // } else {
-            //     console.log("catch ", response.statusText);
-            //     alert("Something went wrong please try again");
-            //     //throw new Error('Failed to save authentication result to the RESTful API');
-            // }
-
             router.push(LOGIN_ROUTE);
         }).catch((e) => {
             console.log("Logout Catch ", e.message)
