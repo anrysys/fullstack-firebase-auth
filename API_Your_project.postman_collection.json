@@ -1,0 +1,328 @@
+{
+	"info": {
+		"_postman_id": "a245b20c-d057-462f-a755-453d7638b2d4",
+		"name": "API_Your_project",
+		"description": "Golang Fiber with JWT RS256 Cert",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "254712",
+		"_collection_link": "https://hackstay.postman.co/workspace/API-HackStay~3c6c5b08-585b-4417-8386-5d49902061ad/collection/254712-a245b20c-d057-462f-a755-453d7638b2d4?action=share&source=collection_link&creator=254712"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "ru-RU",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"first_name\": \"Anry\",\r\n    \"last_name\": \"Akishyn\",\r\n    \"phone_code\": \"38068\",\r\n    \"phone_number\": \"1468300\",\r\n    \"email\": \"anry@your-domain.com\",\r\n    \"password\": \"12345678\",\r\n    \"password_confirm\": \"12345678\",\r\n    \"lang\": \"ru\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/{{api_version}}/auth/register",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PreRegister",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "ru",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"anry@hackstay.com\",\r\n    \"lang\": \"ru\"\r\n} ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/{{api_version}}/auth/preregister",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"auth",
+								"preregister"
+							],
+							"query": [
+								{
+									"key": "lang",
+									"value": "ru",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PreRegisterValidator",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"anry@hackstay.com\",\r\n    \"otp_code\": \"77c64\",\r\n    \"lang\": \"ru\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/{{api_version}}/auth/preregistervalidator",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"auth",
+								"preregistervalidator"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"lang\": \"ru\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/{{api_version}}/auth/refresh",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"lang\": \"ru\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/{{api_version}}/auth/logout",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"anry@hackstay.com\",\r\n    \"password\": \"12345678\",\r\n    \"lang\": \"ru\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/{{api_version}}/auth/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "User authorization and authentication system"
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get Me",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"lang\": \"ru\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/{{api_version}}/users/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Me",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"Андрей 22\",\n    \"last_name\": \"Акишин 333\",\n    \"lang\": \"ru\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/{{api_version}}/users/updateme",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{api_version}}",
+								"users",
+								"updateme"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "User's private resources"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost:8000",
+			"type": "string"
+		},
+		{
+			"key": "host",
+			"value": "https://api.your-domain.com",
+			"disabled": true
+		},
+		{
+			"key": "api_version",
+			"value": "v1",
+			"type": "string"
+		}
+	]
+}

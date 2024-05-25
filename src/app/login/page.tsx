@@ -3,17 +3,24 @@ import SubmitButton from "@/components/Button";
 import InputField from "@/components/InputField";
 import { PROFILE_ROUTE, REGISTER_ROUTE } from "@/constants/routes";
 import useAuthentication from "@/hooks/useAuthentication";
-import { auth } from '@/services/firebase';
+// import { auth } from '@/services/firebase';
+import { app, auth, provider } from '@/services/firebase';
 import { useLoginValidation } from "@/validationSchema/useAuth";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import { getToken, initializeAppCheck } from 'firebase/app-check';
+
 const Login = () => {
     const { handleSubmit, register, formState: { errors }, reset } = useLoginValidation();
     const router = useRouter();
     useAuthentication();
-    const submitForm = (values: any) => {
+
+    // Инициализация Firebase App Check
+    const appCheck = initializeAppCheck(app, { provider: provider });
+
+    const submitForm = async (values: any) => {
 
         // Fetch locale from user browser & set it to the values object
         const locale = navigator.language; // "en-US"
@@ -23,9 +30,19 @@ const Login = () => {
 
         signInWithEmailAndPassword(auth, values.email, values.password).then(async (objResponseFromFirebase) => {
 
+            let appCheckTokenResponse;
+            try {
+                appCheckTokenResponse = await getToken(appCheck, /* forceRefresh= */ false);
+            } catch (err) {
+                // Handle any errors if the token was not retrieved.
+                console.error(err);
+                return;
+            }
+        
             // Add objResponseFromFirebase to values
             values.user = objResponseFromFirebase.user;
-            // console.log("objResponseFromFirebase + values ", values);
+            // Add the Firebase App Check token to the values object
+            values.firebase_app_check_token = appCheckTokenResponse.token
 
             // Save the authentication result to the RESTful API
             const response = await fetch('/api/auth/login', {

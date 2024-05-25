@@ -23,6 +23,14 @@ func Setup(micro *fiber.App) {
 	})
 
 	micro.Get("/users/me", middleware.Auth, controllers.GetMe)
+
+	// micro.Get("/users/me", middleware.FirebaseAppCheck(func(c *fiber.Ctx) error {
+	// 	return c.Next()
+	// }), controllers.GetMe)
+
+	// OR you can use this way
+	//micro.Get("/users/me", middleware.FirebaseAppCheck(middleware.Auth), controllers.GetMe)
+
 	micro.Patch("/users/updateme", middleware.Auth, controllers.UpdateMe)
 
 	ctx := context.TODO()

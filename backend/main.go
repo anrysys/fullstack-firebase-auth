@@ -5,7 +5,6 @@ import (
 	"backend/global"
 	"backend/handlers"
 	"backend/routes"
-	"context"
 	"fmt"
 	"log"
 	"time"
@@ -20,32 +19,13 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"golang.org/x/text/language"
-
-	firebaseAdmin "firebase.google.com/go/v4"
-	"firebase.google.com/go/v4/appcheck"
-	// "firebase.google.com/go/v4/auth"
-	// "firebase.google.com/go/v4/messaging"
 )
 
 //var Conf *configs.Config
 
-var (
-	appCheck *appcheck.Client
-)
-
 func init() {
+
 	global.LoadConfig(".")
-
-	app, err := firebaseAdmin.NewApp(context.Background(), nil)
-	if err != nil {
-		log.Fatalf("error initializing app: %v\n", err)
-	}
-
-	appCheck, err = app.AppCheck(context.Background())
-	if err != nil {
-		log.Fatalf("error initializing app: %v\n", err)
-	}
-
 }
 
 func main() {
