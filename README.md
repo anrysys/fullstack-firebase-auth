@@ -1,4 +1,4 @@
-# Fullstack on Next.js (frontend) and Fiber (backend) with Firebase Authentication and App Check
+# Fullstack on Next.js (frontend) / Fiber Go-lang (backend) with Firebase Authentication and App Check and ReCaptcha v3
 
 
 `Next Firebase Authentication` is a project that demonstrates how to implement user authentication in a Next.js application using `Firebase Authentication`. It provides a complete user authentication flow, including user `registration`, `login`, `password reset`, and `user account deletion`.

@@ -1,5 +1,5 @@
 {
-  "name": "next-firebase",
+  "name": "fullstack-firebase-authentication",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -15,7 +15,6 @@
     "dotenv": "^16.4.5",
     "firebase": "^10.12.1",
     "next": "^14.2.3",
-    "next-recaptcha-v3": "^1.4.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.51.4",
