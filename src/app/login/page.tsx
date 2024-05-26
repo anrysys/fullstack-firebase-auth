@@ -38,7 +38,7 @@ const Login = () => {
                 console.error(err);
                 return;
             }
-        
+
             // Add objResponseFromFirebase to values
             values.user = objResponseFromFirebase.user;
             // Add the Firebase App Check token to the values object
@@ -52,15 +52,20 @@ const Login = () => {
                 },
                 body: JSON.stringify(values),
             });
-            //console.log("response FROM API", response);
 
-            if (response.ok) {
+            // Convert the response to JSON
+            const resp = await response.json();
+
+            console.log("Response data from API", resp);
+
+            // Handle the response
+            if (resp.status == 'success') {
                 alert("User Login Successfully");
                 reset();
                 router.push(PROFILE_ROUTE);
             } else {
-                console.log("catch ", response.statusText);
-                alert("Something went wrong please try again");
+                // console.log("catch ", response.statusText);
+                alert(resp.errors);
                 //throw new Error('Failed to save authentication result to the RESTful API');
             }
             router.push(PROFILE_ROUTE);

@@ -28,3 +28,25 @@ func TestMain(t *testing.T) {
 		t.Errorf("expected status code %d, got %d", http.StatusOK, resp.StatusCode)
 	}
 }
+
+// func TestVerifyToken(t *testing.T) {
+//     ctx := context.Background()
+//     opt := option.WithCredentialsFile("path/to/serviceAccountKey.json")
+//     app, err := firebase.NewApp(ctx, nil, opt)
+//     if err != nil {
+//         t.Fatalf("error initializing app: %v", err)
+//     }
+
+//     client, err := app.AppCheck(ctx)
+//     if err != nil {
+//         t.Fatalf("error getting AppCheck client: %v", err)
+//     }
+
+//     // Replace this with a valid App Check token.
+//     token := "REPLACE_THIS_WITH_A_VALID_TOKEN"
+
+//     _, err = client.VerifyToken(ctx, token)
+//     if err != nil {
+//         t.Fatalf("VerifyToken failed: %v", err)
+//     }
+// }

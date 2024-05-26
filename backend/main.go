@@ -63,12 +63,12 @@ func main() {
 		println(appCheckToken)
 
 		if appCheckToken == "" {
-			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "fail", "errors": "Unauthorized"})
+			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "fail", "errors": "Unauthorized - No App Check token provided"})
 		}
 
 		_, err := appCheckClient.VerifyToken(appCheckToken)
 		if err != nil {
-			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "fail", "errors": "Unauthorized"})
+			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "fail", "errors": "Unauthorized - Invalid App Check token"})
 		}
 
 		return c.Next()
