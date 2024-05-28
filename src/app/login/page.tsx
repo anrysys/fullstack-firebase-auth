@@ -74,6 +74,10 @@ const Login = () => {
             alert("Please try Again");
         });
     }
+    // TODO: DELETE THESE DEFAULT VALUES !!!
+    const emailDefaultValue="anry@hackstay.com";
+    const passwordDefaultValue="12345678";
+
 
     return (
         <div className="h-screen flex justify-center items-center bg-gradient-to-br from-yellow-400/20 via-blue-300 to-purple-400/60">
@@ -89,6 +93,8 @@ const Login = () => {
                         placeholder="Enter Your Email Here..."
                         name="email"
                         label="Email"
+                        defaultValue={emailDefaultValue}
+                        
                     />
                     <InputField
                         register={register}
@@ -97,6 +103,7 @@ const Login = () => {
                         placeholder="Enter Your Password Here..."
                         name="password"
                         label="Password"
+                        defaultValue={passwordDefaultValue}
                     />
                     <SubmitButton label="Submit" />
                 </form>

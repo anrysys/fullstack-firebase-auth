@@ -38,12 +38,33 @@ type Config struct {
 	SmtpPort     int    `mapstructure:"SMTP_PORT"`
 	SmtpUser     string `mapstructure:"SMTP_USER"`
 	SmtpPassword string `mapstructure:"SMTP_PASSWORD"`
+
+	// Firebase configuration for Firebase Admin SDK (for App Check)
+	FirebaseAppID             string `mapstructure:"NEXT_PUBLIC_FIREBASE_APP_ID"`
+	FirebaseAPIKey            string `mapstructure:"NEXT_PUBLIC_FIREBASE_API_KEY"`
+	FirebaseAuthDomain        string `mapstructure:"NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN"`
+	FirebaseDatabaseURL       string `mapstructure:"NEXT_PUBLIC_FIREBASE_DATABASE_URL"`
+	FirebaseProjectID         string `mapstructure:"NEXT_PUBLIC_FIREBASE_PROJECT_ID"`
+	FirebaseStorageBucket     string `mapstructure:"NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET"`
+	FirebaseMessagingSenderID string `mapstructure:"NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID"`
+	FirebaseMeasurementID     string `mapstructure:"NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID"`
 }
 
-func LoadConfig(path string) (config Config, err error) {
-	viper.AddConfigPath(path)
+func LoadConfig(path []string) (config Config, err error) {
+
 	viper.SetConfigType("env")
+
+	// // делаем итерацию для массива путей к файлам .env
+	// for _, p := range path {
+	// 	viper.AddConfigPath(p)
+	// }
+
+	viper.AddConfigPath(path[0])
+
 	viper.SetConfigName(".env")
+
+	// viper.AddConfigPath(path[1])
+	// viper.SetConfigName(".env.local")
 
 	viper.AutomaticEnv()
 

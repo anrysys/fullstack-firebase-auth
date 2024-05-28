@@ -1,6 +1,6 @@
-import { InputFieldT } from "@/types/FormTypes"
+import { InputFieldT } from "@/types/FormTypes";
 
-const InputField = ({type, name, placeholder,label, register, error}:InputFieldT) => {
+const InputField = ({type, name, placeholder,label, register, error, defaultValue}:InputFieldT) => {
     return (
         <div className="my-2 flex flex-col">
             <label className="py-1 text-md text-black/50 font-mono font-medium">
@@ -14,6 +14,7 @@ const InputField = ({type, name, placeholder,label, register, error}:InputFieldT
                 autoComplete="off"
                 placeholder={placeholder} 
                 id={`field_${name}`} 
+                defaultValue={defaultValue}
             />
             {
                 error && <span className=" text-red-500 py-1">{error.message}</span>

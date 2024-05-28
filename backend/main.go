@@ -33,7 +33,7 @@ var (
 
 func init() {
 
-	global.LoadConfig(".")
+	global.LoadConfig([]string{".", "../."})
 
 }
 
@@ -44,8 +44,14 @@ func main() {
 		JSONDecoder: json.Unmarshal,
 	})
 
+	// Firebase Admin configuration
+	conf := &firebase.Config{
+		DatabaseURL:   global.Conf.FirebaseDatabaseURL,
+		ProjectID:     global.Conf.FirebaseProjectID,
+		StorageBucket: global.Conf.FirebaseStorageBucket,
+	}
 	// Initialize Firebase App with App Check
-	firebaseApp, err := firebase.NewApp(context.Background(), nil)
+	firebaseApp, err := firebase.NewApp(context.Background(), conf)
 	if err != nil {
 		log.Fatalf("error initializing app: %v\n", err)
 	}

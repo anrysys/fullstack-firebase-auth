@@ -14,7 +14,7 @@ export async function POST(req: Request, resp: Response) {
 
     const body = await req.json();
 
-    const { email, password, lang, firebase_app_check_token } = body;
+    const { email, password, lang, firebase_app_check_token, user  } = body;
 
     const res = await fetch(url, {
         method: 'POST',
@@ -26,10 +26,13 @@ export async function POST(req: Request, resp: Response) {
         body: JSON.stringify({
             email,
             password,
-            lang
+            lang,
+            user
         }),
     })
     const data = await res.json()
+
+    console.log("data XXX 111", data);
 
     // If the response is not successful, throw an error
     if (data.status == 'fail') {
