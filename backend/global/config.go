@@ -8,8 +8,8 @@ import (
 
 var Conf *configs.Config
 
-func LoadConfig(path []string) {
-	config, err := configs.LoadConfig(path)
+func LoadConfig() {
+	config, err := configs.LoadConfig()
 	if err != nil {
 		log.Fatalln("Failed to load environment variables! \n", err.Error())
 	}

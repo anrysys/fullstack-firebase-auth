@@ -50,29 +50,38 @@ type Config struct {
 	FirebaseMeasurementID     string `mapstructure:"NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID"`
 }
 
-func LoadConfig(path []string) (config Config, err error) {
+func LoadConfig() (config Config, err error) {
 
+	// Load environment variables
 	viper.SetConfigType("env")
-
-	// // делаем итерацию для массива путей к файлам .env
-	// for _, p := range path {
-	// 	viper.AddConfigPath(p)
-	// }
-
-	viper.AddConfigPath(path[0])
-
-	viper.SetConfigName(".env")
-
-	// viper.AddConfigPath(path[1])
-	// viper.SetConfigName(".env.local")
-
 	viper.AutomaticEnv()
 
+	// Load .env file
+	viper.SetConfigName(".env")
+	viper.AddConfigPath(".")
 	err = viper.ReadInConfig()
 	if err != nil {
 		return
 	}
-
 	err = viper.Unmarshal(&config)
+	if err != nil {
+		return
+	}
+
+	// Load .env.local file
+	viper.SetConfigName(".env.local")
+	viper.AddConfigPath("..")
+	// Get only those variables that contain the prefix "NEXT_PUBLIC_FIREBASE_"
+	viper.SetEnvPrefix("NEXT_PUBLIC_FIREBASE_")
+	// viper.AutomaticEnv()
+	err = viper.MergeInConfig()
+	if err != nil {
+		return
+	}
+	err = viper.Unmarshal(&config)
+	if err != nil {
+		return
+	}
+
 	return
 }

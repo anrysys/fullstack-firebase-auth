@@ -17,7 +17,7 @@ const Login = () => {
     const router = useRouter();
     useAuthentication();
 
-    // Инициализация Firebase App Check
+    // Initialize the Firebase App Check
     const appCheck = initializeAppCheck(app, { provider: provider });
 
     const submitForm = async (values: any) => {

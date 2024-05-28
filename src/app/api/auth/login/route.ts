@@ -32,7 +32,7 @@ export async function POST(req: Request, resp: Response) {
     })
     const data = await res.json()
 
-    console.log("data XXX 111", data);
+    // console.log("data XXX 111", data);
 
     // If the response is not successful, throw an error
     if (data.status == 'fail') {
@@ -51,7 +51,7 @@ export async function POST(req: Request, resp: Response) {
     }
 
     // // Return the response
-    console.log("data", data);
+   // console.log("data", data);
 
     return Response.json(data)
 

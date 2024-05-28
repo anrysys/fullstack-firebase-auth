@@ -25,15 +25,13 @@ import (
 	"golang.org/x/text/language"
 )
 
-//var Conf *configs.Config
-
 var (
 	appCheckClient *appcheck.Client
 )
 
 func init() {
 
-	global.LoadConfig([]string{".", "../."})
+	global.LoadConfig()
 
 }
 
