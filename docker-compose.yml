@@ -1,13 +1,16 @@
 services:
   postgres:
+    env_file:
+      - ./backend/.env
+      - path: ./backend/.env
+        required: true # default
+
     image: postgres:latest
     container_name: postgres
     ports:
       - "${POSTGRES_PORT}:5432"
     volumes:
       - postgres_data:${PGDATA}
-    env_file:
-      - ./.env
     environment:
       # TEST: ${TEST}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -15,7 +18,6 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       PGUSER: ${POSTGRES_USER}
       PGDATA: ${PGDATA}
-
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d ${POSTGRES_DB} -U ${POSTGRES_USER}"]
       interval: 1s
@@ -24,6 +26,10 @@ services:
       #start_period: 30s
     restart: always
   redis:
+    env_file:
+      - ./backend/.env
+      - path: ./backend/.env
+        required: true # default
     image: redis:alpine
     container_name: redis
     ports:
@@ -31,17 +37,22 @@ services:
     volumes:
       - redis_db:/data
     restart: always
-  # migrate:
-  #   image: migrate/migrate:v4.17.1-amd64
-  #   profiles: ["tools"]
-  #   volumes:
-  #     - ./backend/platform/migrations:/migrations
-  #   entrypoint: ["migrate", "-path", "/migrations", "-database", "${DATABASE_URL}"]
-  #   command: ["up"]
-  #   depends_on:
-  #     postgres:
-  #       condition: service_healthy
-  #   restart: on-failure
+  migrate:
+    env_file:
+      - ./backend/.env
+      - path: ./backend/.env
+        required: true # default
+    image: migrate/migrate:v4.17.1-amd64
+    profiles: ["tools"]
+    volumes:
+      - ./backend/platform/migrations:/migrations
+    entrypoint: ["migrate", "-path", "/migrations", "-database", "${POSTGRESQL_URL}"]
+    command: ["up"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: on-failure
 volumes:
   postgres_data:
   redis_db:
+  

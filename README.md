@@ -73,3 +73,38 @@ Anrysys - [anrysys@gmail.com](mailto:anrysys@gmail.com)
 Project Link: [https://github.com/anrysys/next-firebase-authentication](https://github.com/anrysys/next-firebase-authentication)
 
 Please replace "Anrysys" and "anrysys@gmail.com" with your actual name and email address.
+
+## Migrate
+[https://github.com/golang-migrate/migrate](https://github.com/golang-migrate/migrate)
+
+Tutotial For PostgreSql: [https://github.com/golang-migrate/migrate/tree/master/database/postgres](https://github.com/golang-migrate/migrate/tree/master/database/postgres)
+
+Parameters For PostgreSql: [https://github.com/golang-migrate/migrate/blob/master/database/postgres/README.md#use-in-your-go-project](https://github.com/golang-migrate/migrate/blob/master/database/postgres/README.md#use-in-your-go-project)
+
+Best Practices: [https://github.com/golang-migrate/migrate/blob/master/MIGRATIONS.md](https://github.com/golang-migrate/migrate/blob/master/MIGRATIONS.md)
+
+Example Migration (Up):
+```shell
+docker compose -f docker-compose.yml --env-file ./backend/.env --profile tools run --rm migrate -source file://migrations -database postgres://YOUR_DB_USER_NAME:YOUR_DB_USER_PASSWORD@postgres:5432/YOUR_DB_NAME?sslmode=disable up
+```
+Example Migration (Down):
+```shell
+docker compose -f docker-compose.yml --env-file ./backend/.env --profile tools run --rm migrate -source file://migrations -database postgres://YOUR_DB_USER_NAME:YOUR_DB_USER_PASSWORD@postgres:5432/YOUR_DB_NAME?sslmode=disable down
+```
+
+Create a new migration:
+```shell
+docker compose -f docker-compose.yml --env-file ./backend/.env --profile tools run --rm migrate create -ext sql -dir /migrations create_customer_table
+```
+
+## Next.js
+<https://nextjs.org>
+
+## Firebase
+<https://firebase.google.com>
+
+## TypeScript
+<https://www.typescriptlang.org>
+
+## React
+<https://reactjs.org>
