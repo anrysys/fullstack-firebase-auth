@@ -3,10 +3,6 @@ include backend/.env
 # export $(shell sed 's/=.*//' backend/.env)
 # .PHONY: clean test security build run
 
-#========================#
-#== DATABASE MIGRATION ==#
-#========================#
-
 # APP_NAME = apiserver
 # BUILD_DIR = $(PWD)/build
 
@@ -15,7 +11,13 @@ SEEDS_FOLDER=./backend/platform/seeds
 name=1
 DOCKER_RUN_COMMAND=docker compose -f $(DOCKER_COMPOSE_FILE) --env-file ./backend/.env --profile tools run --rm
 
-########## DOCKER ##########
+################################################## 
+#  ____             _             
+# |  _ \  ___   ___| | _____ _ __ 
+# | | | |/ _ \ / __| |/ / _ \ '__|
+# | |_| | (_) | (__|   <  __/ |   
+# |____/ \___/ \___|_|\_\___|_|   
+#                                
 
 docker.start:
 	docker compose --env-file ./backend/.env up -d
@@ -28,7 +30,13 @@ docker.build.start:
 	cd backend ; go mod tidy ; docker login ; docker build --no-cache -t api-hackstay:$(ver) -f Dockerfile.production . ; docker tag api-hackstay:$(ver) anrysys/api-hackstay:$(ver) ; docker push anrysys/api-hackstay:$(ver)
 #	echo $(ver); echo $(ver); echo $(ver);		
 
-########## BACKEND ##########
+##################################################
+#  ____             _                  _ 
+# | __ )  __ _  ___| | _____ _ __   __| |
+# |  _ \ / _` |/ __| |/ / _ \ '_ \ / _` |
+# | |_) | (_| | (__|   <  __/ | | | (_| |
+# |____/ \__,_|\___|_|\_\___|_| |_|\__,_|
+#                                      
 
 start.server.backend:
 	cd backend ; air 
@@ -81,7 +89,14 @@ lang.init.uk:
 lang.init.all:
 	cd backend ; goi18n -sourceLanguage=en -outdir=resources/langs active.en.toml active.ru.toml active.uk.toml
 
-########## MIGRATIONS ##########
+##################################################
+# 
+#  __  __ _                 _   _                 
+# |  \/  (_) __ _ _ __ __ _| |_(_) ___  _ __  ___ 
+# | |\/| | |/ _` | '__/ _` | __| |/ _ \| '_ \/ __|
+# | |  | | | (_| | | | (_| | |_| | (_) | | | \__ \
+# |_|  |_|_|\__, |_|  \__,_|\__|_|\___/|_| |_|___/
+#           |___/                                 
 #
 # https://github.com/golang-migrate/migrate
 # 
