@@ -40,14 +40,14 @@ type Config struct {
 	SmtpPassword string `mapstructure:"SMTP_PASSWORD"`
 
 	// Firebase configuration for Firebase Admin SDK (for App Check)
-	FirebaseAppID             string `mapstructure:"NEXT_PUBLIC_FIREBASE_APP_ID"`
-	FirebaseAPIKey            string `mapstructure:"NEXT_PUBLIC_FIREBASE_API_KEY"`
-	FirebaseAuthDomain        string `mapstructure:"NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN"`
-	FirebaseDatabaseURL       string `mapstructure:"NEXT_PUBLIC_FIREBASE_DATABASE_URL"`
-	FirebaseProjectID         string `mapstructure:"NEXT_PUBLIC_FIREBASE_PROJECT_ID"`
-	FirebaseStorageBucket     string `mapstructure:"NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET"`
-	FirebaseMessagingSenderID string `mapstructure:"NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID"`
-	FirebaseMeasurementID     string `mapstructure:"NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID"`
+	// FirebaseAppID             string `mapstructure:"NEXT_PUBLIC_FIREBASE_APP_ID"`
+	// FirebaseAPIKey            string `mapstructure:"NEXT_PUBLIC_FIREBASE_API_KEY"`
+	// FirebaseAuthDomain        string `mapstructure:"NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN"`
+	FirebaseDatabaseURL   string `mapstructure:"NEXT_PUBLIC_FIREBASE_DATABASE_URL"`
+	FirebaseProjectID     string `mapstructure:"NEXT_PUBLIC_FIREBASE_PROJECT_ID"`
+	FirebaseStorageBucket string `mapstructure:"NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET"`
+	// FirebaseMessagingSenderID string `mapstructure:"NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID"`
+	// FirebaseMeasurementID     string `mapstructure:"NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID"`
 }
 
 func LoadConfig() (config Config, err error) {

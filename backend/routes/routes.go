@@ -14,8 +14,8 @@ import (
 func Setup(micro *fiber.App) {
 
 	micro.Route("/auth", func(router fiber.Router) {
-		router.Post("/preregister", controllers.PreRegister)
-		router.Post("/preregistervalidator", controllers.PreRegisterValidator)
+		// router.Post("/preregister", controllers.PreRegister)
+		// router.Post("/preregistervalidator", controllers.PreRegisterValidator)
 		router.Post("/register", controllers.Register)
 		router.Post("/login", controllers.Login)
 		router.Get("/logout", middleware.Auth, controllers.Logout)

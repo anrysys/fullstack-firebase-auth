@@ -35,29 +35,32 @@ const (
 type UserRoles string
 
 const (
-	UserRoleAdmin  UserRoles = "admin"
-	UserRoleBuyer  UserRoles = "buyer"
-	UserRoleSeller UserRoles = "seller"
+	UserRoleAdmin    UserRoles = "admin"
+	UserRoleCustomer UserRoles = "customer"
+	UserRoleSupplier UserRoles = "supplier"
+	UserRoleCourier  UserRoles = "courier"
 )
 
 // type:int64;
 type User struct {
 	//gorm.Model
-	ID          *int64       `gorm:"column:user_id;not null;primaryKey" json:"user_id"`
-	Email       *string      `gorm:"type:varchar(100);not null;uniqueIndex:users_email_uidx"`
-	ShortName   string       `gorm:"type:varchar(36)"`
-	FirstName   string       `gorm:"type:varchar(50)"`
-	LastName    string       `gorm:"type:varchar(50)"`
-	PhoneCode   string       `gorm:"type:varchar(10)"`
-	PhoneNumber string       `gorm:"type:varchar(20)"`
-	Password    string       `gorm:"type:varchar(100)"`
-	OtpCode     string       `gorm:"type:char(5)"`
-	Lang        string       `gorm:"type:varchar(2)"`
-	UserStatus  UserStatuses `gorm:"not null;default:pending"`
-	UserRole    UserRoles    `gorm:"not null;default:buyer"`
-	Photo       string       `gorm:"type:varchar(100)'"`
-	ActivatedAt sql.NullTime `gorm:""`
-	VerifiedAt  sql.NullTime `gorm:""`
+	ID            *int64       `gorm:"column:user_id;not null;primaryKey" json:"user_id"`
+	FirebaseUID   string       `gorm:"type:varchar(100);not null;uniqueIndex:users_firebase_uid_uidx"`
+	Email         *string      `gorm:"type:varchar(100);not null;uniqueIndex:users_email_uidx"`
+	EmailVerified bool         `gorm:"not null;default:false"`
+	ShortName     string       `gorm:"type:varchar(36)"`
+	FirstName     string       `gorm:"type:varchar(50)"`
+	LastName      string       `gorm:"type:varchar(50)"`
+	PhoneCode     string       `gorm:"type:varchar(10)"`
+	PhoneNumber   string       `gorm:"type:varchar(20)"`
+	Password      string       `gorm:"type:varchar(100)"`
+	OtpCode       string       `gorm:"type:char(5)"`
+	Lang          string       `gorm:"type:varchar(2)"`
+	UserStatus    UserStatuses `gorm:"not null;default:pending"`
+	UserRole      UserRoles    `gorm:"not null;default:customer"`
+	Photo         string       `gorm:"type:varchar(100)'"`
+	ActivatedAt   sql.NullTime `gorm:""`
+	VerifiedAt    sql.NullTime `gorm:""`
 	// CreatedAt time.Time `gorm:"default:current_timestamp"`
 	CreatedAt *time.Time   `gorm:""`
 	UpdatedAt sql.NullTime `gorm:""`
@@ -86,6 +89,7 @@ type UpdateMe struct {
 
 // Registration for administartors (ERM/CRM)
 type Register struct {
+	FirebaseUID     string `json:"firebase_uid" validate:"required"`
 	Email           string `json:"email" validate:"required,email"`
 	Password        string `json:"password" validate:"required,min=8"`
 	PasswordConfirm string `json:"password_confirm" validate:"required,min=8"`

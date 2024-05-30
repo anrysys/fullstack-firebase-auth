@@ -37,3 +37,4 @@ next-env.d.ts
 /backend/tmp/
 /backend/.env
 /backend/__debug*
+/.vscode

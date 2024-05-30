@@ -38,12 +38,14 @@ docker.build.start:
 # |____/ \__,_|\___|_|\_\___|_| |_|\__,_|
 #                                      
 
-start.server.backend:
-	cd backend ; air 
+start.server.backend.dev:
+	cd backend ; air > /dev/null 2>&1 &
+
+stop.server.backend.dev:
+	cd backend ; killall air
 
 start.server.backend.prod:
 	cd backend ; go run main.go
-
 
 backend.init:
 	cd backend ; go mod init github.com/anrysys/fullstack-firebase-auth
@@ -103,20 +105,24 @@ lang.init.all:
 # Tutorials: https://github.com/golang-migrate/migrate/blob/master/database/postgres/TUTORIAL.md
 # Parameters: https://github.com/golang-migrate/migrate/tree/master/database/postgres
 #
-# migrate create -ext sql -dir db/migrations create_posts_table
 # make migrate.create create_posts_table
+# make migrate up 
+# make migrate up 2	# Run 2 migrations
+# make migrate down 1	# Rollback 1 migration
+# make migrate.force 20210901123456_create_posts_table
+# 
 migrate.create:
 	migrate create -ext sql -dir $(MIGRATIONS_FOLDER) $@
 
 ## Run migrations UP/DOWN with ARGS (make migrate up 2 or make migrate down 1)
 ARGS = $(filter-out $@,$(MAKECMDGOALS))
-migrate:
+migrate.run:
 	$(DOCKER_RUN_COMMAND) migrate -source file://migrations -database postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:$(POSTGRES_PORT)/$(POSTGRES_DB)?sslmode=$(POSTGRES_SSL_MODE) $(ARGS)
 	@:
 
 ## Run migrations FORCE
 migrate.force:
-	$(DOCKER_RUN_COMMAND) migrate force $(name)
+	$(DOCKER_RUN_COMMAND) migrate force $@
 
 shell.db:
 	docker compose -f $(DOCKER_COMPOSE_FILE) exec postgres psql -U $(POSTGRES_USER) -d $(POSTGRES_DB)
