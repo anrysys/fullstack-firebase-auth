@@ -64,7 +64,7 @@ func main() {
 	app.Use(func(c *fiber.Ctx) error {
 		appCheckToken := c.Get("X-Firebase-AppCheck")
 
-		println(appCheckToken)
+		// println(appCheckToken)
 
 		if appCheckToken == "" {
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "fail", "errors": "Unauthorized - No App Check token provided"})

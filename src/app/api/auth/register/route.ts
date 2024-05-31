@@ -1,35 +1,59 @@
 'use server'
 
+import { cookies } from "next/headers";
+
+
 export async function POST(req: Request, resp: Response) {
 
+    // Get the URL from the environment variables
     const url = process.env.NEXT_PUBLIC_API_AUTH_REGISTER_URL;
 
     if (!url) {
         throw new Error('NEXT_PUBLIC_API_AUTH_REGISTER_URL is not defined');
     }
 
-    // Delete cookie access token on api register
+    const body = await req.json();
+
+    const { email, password, cnfPassword, lang, firebase_app_check_token, user  } = body;
+
     const res = await fetch(url, {
-        method: 'GET',
+        method: 'POST',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            'X-Firebase-AppCheck': firebase_app_check_token,
         },
-        // body: JSON.stringify({
-        //     lang
-        // }),        
+        body: JSON.stringify({
+            email,
+            password,
+            password_confirm: cnfPassword,
+            firebase_uid: user.uid,
+            lang,
+            user
+        }),
     })
     const data = await res.json()
 
-    // If the response is not successful, throw an error
-    if (data.status !== 'success') {
-        // TODO  Add phrase for error message in backend
-        // throw new Error(data.message);
-    } else {
-        // Delete cookie access token
-        // cookies().delete('access_token')
+    // console.log("data XXX 111", data);
 
+    // If the response is not successful, throw an error
+    if (data.status == 'fail') {
+        // TODO  Add phrase for error message in backend
+       //  throw new Error(data.message);
+    } 
+    else {
+        // Save access token in cookie
+        cookies().set({
+            name: 'access_token',
+            value: data.access_token,
+            httpOnly: true,
+            path: '/',
+            maxAge: 30 * 24 * 60 * 60, // 30 days
+        })
     }
+
+    // // Return the response
+   // console.log("data", data);
 
     return Response.json(data)
 
