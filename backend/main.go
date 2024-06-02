@@ -42,6 +42,11 @@ func main() {
 		JSONDecoder: json.Unmarshal,
 	})
 
+	app.Use(logger.New(logger.Config{
+		// For more options, see the Config section
+		Format: "${status} - ${method} ${path}\n",
+	}))
+
 	// Firebase Admin configuration
 	conf := &firebase.Config{
 		DatabaseURL:   global.Conf.FirebaseDatabaseURL,
@@ -62,6 +67,7 @@ func main() {
 
 	// Middleware to check App Check token
 	app.Use(func(c *fiber.Ctx) error {
+
 		appCheckToken := c.Get("X-Firebase-AppCheck")
 
 		// println(appCheckToken)
@@ -88,10 +94,6 @@ func main() {
 	app.Mount(fmt.Sprintf("/api/%s", global.Conf.ApiVersion), micro)
 
 	app.Use(
-		logger.New(logger.Config{
-			// For more options, see the Config section
-			Format: "${status} - ${method} ${path}\n",
-		}),
 		// 3 requests per 10 seconds max
 		limiter.New(limiter.Config{
 			Expiration: 10 * time.Second,
@@ -114,9 +116,6 @@ func main() {
 		}))
 
 	micro.Use(
-		logger.New(logger.Config{
-			Format: "${status} - ${method} ${path}\n",
-		}),
 		// 3 requests per 10 seconds max
 		limiter.New(limiter.Config{
 			Expiration: 10 * time.Second,

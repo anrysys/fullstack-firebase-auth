@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"context"
-	"fmt"
 	"strings"
 	"time"
 
@@ -365,7 +364,7 @@ func CreateTokenForUser(c *fiber.Ctx, user models.User) error {
 	}
 
 	errRefresh := connect.RedisClient.Set(ctx, refreshTokenDetails.TokenUuid, user.ID, time.Unix(*refreshTokenDetails.ExpiresIn, 0).Sub(now)).Err()
-	if errAccess != nil {
+	if errRefresh != nil {
 		return c.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{"status": "fail", "errors": errRefresh.Error()})
 	}
 
@@ -399,7 +398,11 @@ func CreateTokenForUser(c *fiber.Ctx, user models.User) error {
 		Domain:   global.Conf.Host,
 	})
 
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "access_token": accessTokenDetails.Token})
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status":        "success",
+		"access_token":  accessTokenDetails.Token,
+		"refresh_token": refreshTokenDetails.Token,
+	})
 }
 
 // Check the auth_login_attempts table for the number of records with the email in the last 15 minutes.
@@ -488,43 +491,18 @@ func RefreshAccessToken(c *fiber.Ctx) error {
 }
 
 func Logout(c *fiber.Ctx) error {
-	refresh_token := c.Cookies("refresh_token")
-	if refresh_token == "" {
-		return c.Status(fiber.StatusForbidden).JSON(fiber.Map{"status": "fail", "errors": handlers.L("TokenIsInvalidOrSessionHasExpired", c)})
-	}
 	ctx := context.TODO()
-
-	// Print refresh_token claims
-	fmt.Println(refresh_token)
-
-	tokenClaims, err := middleware.ValidateToken(refresh_token, global.Conf.RefreshTokenPublicKey)
-	if err != nil {
-		return c.Status(fiber.StatusForbidden).JSON(fiber.Map{"status": "fail", "errors": err.Error()})
-	}
-
 	access_token_uuid := c.Locals("access_token_uuid").(string)
-	_, err = connect.RedisClient.Del(ctx, tokenClaims.TokenUuid, access_token_uuid).Result()
+	err := connect.RedisClient.Del(ctx, access_token_uuid).Err()
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "errors": err.Error()})
 	}
 
-	expired := time.Now().Add(-time.Hour * 24)
-	c.Cookie(&fiber.Cookie{
-		Name:    "access_token",
-		Value:   "",
-		Expires: expired,
-	})
-	c.Cookie(&fiber.Cookie{
-		Name:    "refresh_token",
-		Value:   "",
-		Expires: expired,
-	})
-	c.Cookie(&fiber.Cookie{
-		Name:    "logged_in",
-		Value:   "",
-		Expires: expired,
-	})
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "message": handlers.L("LogoutSuccessful", c)})
+	c.ClearCookie("access_token")
+	c.ClearCookie("refresh_token")
+	c.ClearCookie("logged_in")
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success"})
 }
 
 // Random generates a random string.

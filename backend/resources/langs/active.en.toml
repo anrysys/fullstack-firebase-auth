@@ -19,6 +19,7 @@ SometingWentWrongServer = "Something went wrong on the server"
 SubjectOtpCode = "Your verification code: {{.OtpCode}}"
 TheUserBelongingToThisTokenNoLoggerExists = "The user belonging to this token does not exist"
 TokenIsInvalidOrSessionHasExpired = "The token is invalid or the session has expired"
+TokenIsEmpty = "The token is empty"
 UserEmailExist = "User with that email already exists"
 YouAreNotLoggedIn = "You are not logged in"
 

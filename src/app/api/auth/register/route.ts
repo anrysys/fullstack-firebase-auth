@@ -1,6 +1,5 @@
 'use server'
 
-import { cookies } from "next/headers";
 
 
 export async function POST(req: Request, resp: Response) {
@@ -39,17 +38,17 @@ export async function POST(req: Request, resp: Response) {
     // If the response is not successful, throw an error
     if (data.status == 'fail') {
         // TODO  Add phrase for error message in backend
-       //  throw new Error(data.message);
+        throw new Error(data.message);
     } 
     else {
-        // Save access token in cookie
-        cookies().set({
-            name: 'access_token',
-            value: data.access_token,
-            httpOnly: true,
-            path: '/',
-            maxAge: 30 * 24 * 60 * 60, // 30 days
-        })
+        // // Save access token in cookie
+        // cookies().set({
+        //     name: 'access_token',
+        //     value: data.access_token,
+        //     httpOnly: true,
+        //     path: '/',
+        //     maxAge: 30 * 24 * 60 * 60, // 30 days
+        // })
     }
 
     // // Return the response

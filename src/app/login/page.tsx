@@ -75,8 +75,8 @@ const Login = () => {
         });
     }
     // TODO: DELETE THESE DEFAULT VALUES !!!
-    const emailDefaultValue="anry@hackstay.com";
-    const passwordDefaultValue="12345678";
+    const emailDefaultValue="user@site.com";
+    const passwordDefaultValue="user@site.com";
 
 
     return (

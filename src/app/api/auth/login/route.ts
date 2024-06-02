@@ -14,7 +14,7 @@ export async function POST(req: Request, resp: Response) {
 
     const body = await req.json();
 
-    const { email, password, lang, firebase_app_check_token, user  } = body;
+    const { email, password, lang, firebase_app_check_token, user } = body;
 
     const res = await fetch(url, {
         method: 'POST',
@@ -37,8 +37,8 @@ export async function POST(req: Request, resp: Response) {
     // If the response is not successful, throw an error
     if (data.status == 'fail') {
         // TODO  Add phrase for error message in backend
-       //  throw new Error(data.message);
-    } 
+        //  throw new Error(data.message);
+    }
     else {
         // Save access token in cookie
         cookies().set({
@@ -48,11 +48,16 @@ export async function POST(req: Request, resp: Response) {
             path: '/',
             maxAge: 30 * 24 * 60 * 60, // 30 days
         })
+        // Save access token in cookie
+        cookies().set({
+            name: 'refresh_token',
+            value: data.refresh_token,
+            httpOnly: true,
+            path: '/',
+            maxAge: 30 * 24 * 60 * 60, // 30 days
+        })
+
     }
-
-    // // Return the response
-   // console.log("data", data);
-
     return Response.json(data)
 
 }

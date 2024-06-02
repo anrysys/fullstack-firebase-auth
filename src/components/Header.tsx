@@ -1,17 +1,44 @@
 "use client";
 import { HOME_ROUTE, LOGIN_ROUTE, PROFILE_ROUTE, REGISTER_ROUTE } from "@/constants/routes";
 import { AuthContext } from "@/provider/AuthProvider";
-import { auth } from "@/services/firebase";
+import { app, auth, provider } from '@/services/firebase';
 import { signOut } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import { getToken, initializeAppCheck } from 'firebase/app-check';
+
 const Header = () => {
     const { user }: any = AuthContext();
     const router = useRouter();
+
     const logOut = () => {
-        signOut(auth).then(async (objResponseFromFirebase) => {
-            router.push(LOGIN_ROUTE);
+
+        // Initialize the Firebase App Check
+        const appCheck = initializeAppCheck(app, { provider: provider });
+
+        // Sign out the user
+        signOut(auth).then(async () => {
+
+            const firebase_app_check_token = await getToken(appCheck);
+
+            console.log("Logout13: from GO: /api/auth/logout firebase_app_check_token", firebase_app_check_token);
+
+
+            // 
+
+            // Send the request to server to logout the user
+            const response = await fetch('/api/auth/logout', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Firebase-AppCheck': firebase_app_check_token.token,
+                },
+                credentials: 'include' // отправить куки
+            });
+
+            router.push(HOME_ROUTE);
+
         }).catch((e) => {
             console.log("Logout Catch ", e.message)
         })

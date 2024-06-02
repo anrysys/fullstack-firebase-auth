@@ -13,6 +13,15 @@ import (
 
 func Setup(micro *fiber.App) {
 
+	ctx := context.TODO()
+	value, err := connect.RedisClient.Get(ctx, "test").Result()
+
+	if err == redis.Nil {
+		fmt.Println("key: test does not exist")
+	} else if err != nil {
+		panic(err)
+	}
+
 	micro.Route("/auth", func(router fiber.Router) {
 		// router.Post("/preregister", controllers.PreRegister)
 		// router.Post("/preregistervalidator", controllers.PreRegisterValidator)
@@ -32,16 +41,6 @@ func Setup(micro *fiber.App) {
 	//micro.Get("/users/me", middleware.FirebaseAppCheck(middleware.Auth), controllers.GetMe)
 
 	micro.Patch("/users/updateme", middleware.Auth, controllers.UpdateMe)
-
-	ctx := context.TODO()
-	value, err := connect.RedisClient.Get(ctx, "test").Result()
-
-	if err == redis.Nil {
-		fmt.Println("key: test does not exist")
-	} else if err != nil {
-		panic(err)
-	}
-
 	micro.Get("/healthchecker", func(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusOK).JSON(fiber.Map{
 			"status":  "success",
