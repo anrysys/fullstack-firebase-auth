@@ -1,17 +1,3 @@
-// package models
-
-// import (
-// 	"gorm.io/gorm"
-// )
-
-// // User модель пользователя для GORM
-// type User struct {
-// 	gorm.Model
-// 	Username string `gorm:"uniqueIndex"`
-// 	Password string
-// 	Email    string `gorm:"uniqueIndex"`
-// }
-
 package models
 
 import (
@@ -54,7 +40,6 @@ type User struct {
 	PhoneCode     string       `gorm:"type:varchar(10)"`
 	PhoneNumber   string       `gorm:"type:varchar(20)"`
 	Password      string       `gorm:"type:varchar(100)"`
-	OtpCode       string       `gorm:"type:char(5)"`
 	Lang          string       `gorm:"type:varchar(2)"`
 	UserStatus    UserStatuses `gorm:"not null;default:pending"`
 	UserRole      UserRoles    `gorm:"not null;default:customer"`
@@ -65,19 +50,6 @@ type User struct {
 	CreatedAt *time.Time   `gorm:""`
 	UpdatedAt sql.NullTime `gorm:""`
 	DeletedAt sql.NullTime `gorm:""`
-}
-
-// Registration for APP (step 1). Sending the first request by the user, sent by email.
-type PreRegister struct {
-	Email string `json:"email" validate:"required,email"`
-	Lang  string `json:"lang" validate:"required"`
-}
-
-// Registration for APP (step 2). User confirmation of the code received by email.
-type PreRegisterValidator struct {
-	Email   string `json:"email" validate:"required,email"`
-	OtpCode string `json:"otp_code" validate:"required"`
-	Lang    string `json:"lang" validate:"required"`
 }
 
 // Data Additional by Registration for APP (step 3). User data (first name, last name)
@@ -111,9 +83,10 @@ type Login struct {
 // 	Lang string `json:"lang" validate:"required"`
 // }
 
-// type Refresh struct {
-// 	Lang string `json:"lang" validate:"required"`
-// }
+type ResetPassword struct {
+	Lang  string `json:"lang" validate:"required"`
+	Email string `json:"email" validate:"required,email"`
+}
 
 type UserResponse struct {
 	ID          int64        `json:"user_id,omitempty"`
@@ -124,7 +97,6 @@ type UserResponse struct {
 	PhoneNumber string       `json:"phone_number,omitempty"`
 	Email       string       `json:"email,omitempty"`
 	Photo       string       `json:"photo,omitempty"`
-	OtpCode     string       `json:"otp_code,omitempty"`
 	UserStatus  string       `json:"user_status,omitempty"`
 	UserRole    string       `json:"user_role,omitempty"`
 	Lang        string       `json:"lang,omitempty"`
@@ -167,7 +139,6 @@ func FilterUserRecord(user *User) UserResponse {
 		FirstName:   user.FirstName,
 		LastName:    user.LastName,
 		Photo:       user.Photo,
-		OtpCode:     user.OtpCode,
 		Lang:        user.Lang,
 		UserStatus:  string(user.UserStatus),
 		UserRole:    string(user.UserRole),

@@ -17,7 +17,6 @@ CREATE TABLE users (
     phone_code VARCHAR(10), 
     phone_number VARCHAR(20), 
     password VARCHAR (100) NOT NULL,    
-    otp_code CHAR (5),    
     user_status _users_user_status_enum NOT NULL DEFAULT 'pending'::_users_user_status_enum,
     user_role _users_user_role_enum NOT NULL DEFAULT 'customer'::_users_user_role_enum,
     photo VARCHAR (100) NOT NULL DEFAULT 'default.png', 
@@ -46,7 +45,6 @@ CREATE TABLE users (
 );
 
 COMMENT ON TABLE users IS 'Users table';
-COMMENT ON COLUMN users.otp_code IS 'Last input otp code by customer';
 COMMENT ON COLUMN users.activated_at IS 'Date when the customer activated the account';
 COMMENT ON COLUMN users.lang IS 'Two letter country code. See standart https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes , https://www.loc.gov/standards/iso639-2/';
 COMMENT ON COLUMN users.email_verified IS 'Email verified status';

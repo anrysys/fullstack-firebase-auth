@@ -120,6 +120,22 @@ func Login(c *fiber.Ctx) error {
 	return CreateTokenForUser(c, user)
 }
 
+func Logout(c *fiber.Ctx) error {
+	ctx := context.TODO()
+	access_token_uuid := c.Locals("access_token_uuid").(string)
+	err := connect.RedisClient.Del(ctx, access_token_uuid).Err()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "errors": err.Error()})
+	}
+
+	c.ClearCookie("access_token")
+	c.ClearCookie("refresh_token")
+	c.ClearCookie("logged_in")
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success"})
+}
+
+// Create token for user
 func CreateTokenForUser(c *fiber.Ctx, user models.User) error {
 
 	accessTokenDetails, err := middleware.CreateToken(
@@ -195,18 +211,6 @@ func CreateTokenForUser(c *fiber.Ctx, user models.User) error {
 	})
 }
 
-// Check the auth_login_attempts table for the number of records with the email in the last 15 minutes.
-// If there are more than 3 records, return an error with the message.
-func CountAttempts(email string) (int64, error) {
-	db := connect.GetDatabase()
-	var count int64
-	err := db.Model(&models.AuthLoginAttempt{}).Select("email").Where("email = ? AND created_at > CURRENT_TIMESTAMP - INTERVAL '15 minutes'", email).Count(&count).Error
-	if err != nil {
-		return 0, err
-	}
-	return count, nil
-}
-
 func RefreshAccessToken(c *fiber.Ctx) error {
 	db := connect.GetDatabase()
 	refresh_token := c.Cookies("refresh_token")
@@ -278,24 +282,7 @@ func RefreshAccessToken(c *fiber.Ctx) error {
 	})
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "access_token": accessTokenDetails.Token})
-}
-
-func Logout(c *fiber.Ctx) error {
-	ctx := context.TODO()
-	access_token_uuid := c.Locals("access_token_uuid").(string)
-	err := connect.RedisClient.Del(ctx, access_token_uuid).Err()
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "errors": err.Error()})
-	}
-
-	c.ClearCookie("access_token")
-	c.ClearCookie("refresh_token")
-	c.ClearCookie("logged_in")
-
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success"})
-}
-
-// Random generates a random string.
+} // Random generates a random string.
 func randomString(len int) string {
 	if len == 0 {
 		return uuid.NewString()

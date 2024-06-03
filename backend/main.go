@@ -11,10 +11,6 @@ import (
 
 	"github.com/BurntSushi/toml"
 
-	"context"
-
-	firebase "firebase.google.com/go/v4"
-	"firebase.google.com/go/v4/appcheck"
 	json "github.com/bytedance/sonic"
 	"github.com/gofiber/contrib/fiberi18n"
 	"github.com/gofiber/fiber/v2"
@@ -25,12 +21,7 @@ import (
 	"golang.org/x/text/language"
 )
 
-var (
-	appCheckClient *appcheck.Client
-)
-
 func init() {
-
 	global.LoadConfig()
 
 }
@@ -47,30 +38,13 @@ func main() {
 		Format: "${status} - ${method} ${path}\n",
 	}))
 
-	// Firebase Admin configuration
-	conf := &firebase.Config{
-		DatabaseURL:   global.Conf.FirebaseDatabaseURL,
-		ProjectID:     global.Conf.FirebaseProjectID,
-		StorageBucket: global.Conf.FirebaseStorageBucket,
-	}
-	// Initialize Firebase App with App Check
-	firebaseApp, err := firebase.NewApp(context.Background(), conf)
-	if err != nil {
-		log.Fatalf("error initializing app: %v\n", err)
-	}
-
-	// Initialize App Check client
-	appCheckClient, err = firebaseApp.AppCheck(context.Background())
-	if err != nil {
-		log.Fatalf("error initializing app check: %v\n", err)
-	}
+	// Initialize Firebase App Check client
+	appCheckClient, _ := connect.InitializeFirebaseAppCheck()
 
 	// Middleware to check App Check token
 	app.Use(func(c *fiber.Ctx) error {
 
 		appCheckToken := c.Get("X-Firebase-AppCheck")
-
-		// println(appCheckToken)
 
 		if appCheckToken == "" {
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"status": "fail", "errors": "Unauthorized - No App Check token provided"})

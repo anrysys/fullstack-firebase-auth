@@ -55,8 +55,7 @@ const Login = () => {
 
             // Convert the response to JSON
             const resp = await response.json();
-
-            console.log("Response data from API", resp);
+            //console.log("Response data from API", resp);
 
             // Handle the response
             if (resp.status == 'success') {

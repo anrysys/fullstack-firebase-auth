@@ -21,11 +21,7 @@ const Header = () => {
         signOut(auth).then(async () => {
 
             const firebase_app_check_token = await getToken(appCheck);
-
-            console.log("Logout13: from GO: /api/auth/logout firebase_app_check_token", firebase_app_check_token);
-
-
-            // 
+            // console.log("Logout ", firebase_app_check_token);
 
             // Send the request to server to logout the user
             const response = await fetch('/api/auth/logout', {
