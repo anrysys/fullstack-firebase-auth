@@ -86,7 +86,8 @@ To run the application, execute the following command:
 Start the service`s container (Postgresql and Redis):
 
 ```shell
-docker-compose up
+cd next-firebase-authentication
+make docker.start
 ```
 
 ## Database Migrations (PostgreSQL)
