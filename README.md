@@ -27,7 +27,7 @@
 - **Firebase Authentication**: A service that provides backend services, easy-to-use SDKs, and ready-made UI libraries to authenticate users to your app.
 - **Firebase App-Check**:
   - Enter in your Firebase <https://console.firebase.google.com> (enter your project ID in section `App Check`) exp: `https://console.firebase.google.com/project/_YOUUR-PROJECT-ID_/appcheck/products`
-  - Create a new captcha v3: <https://www.google.com/recaptcha/>
+  - Create a new ReCaptcha v3: <https://www.google.com/recaptcha/>
 - **React**: A JavaScript library for building user interfaces.
 
 ## Prerequisites
