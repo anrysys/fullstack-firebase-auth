@@ -38,6 +38,7 @@ Before you begin, ensure you have met the following requirements:
 
 - You have installed Go.
 - You have a `<Windows/Linux/Mac>` machine.
+- IMPORTANT!!! Make sure your computer is not using ports 3000, 5432, 6379, and 8000
 
 ## Setup
 
