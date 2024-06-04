@@ -26,3 +26,15 @@ export const useRegisterValidation = () => {
     });
     return methods;
 };
+
+const forgotPasswordSchema = Yup.object({
+    email: Yup.string().email("Please enter valid email").required("Please fill this field"),
+});
+
+export const useForgotPasswordValidation = () => {
+    const methods = useForm({
+        resolver: yupResolver(forgotPasswordSchema)
+    });
+    return methods;
+};
+

@@ -3,7 +3,7 @@ import { ReCaptchaV3Provider } from "firebase/app-check";
 import { getAuth } from "firebase/auth";
 
 // !!! IMPORTANT !!!
-// !Add secret key (in field 'SECRET KEY': ************ ) to project settings in Firebase Console https://console.firebase.google.com/project/yoko-ca061/appcheck/apps
+// !Add secret key (in field 'SECRET KEY': ************ ) to project settings in Firebase Console https://console.firebase.google.com/project/YOUR-PROJECT/appcheck/apps
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries

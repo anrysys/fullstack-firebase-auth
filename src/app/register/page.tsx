@@ -1,16 +1,15 @@
 "use client";
+
 import SubmitButton from "@/components/Button";
 import InputField from "@/components/InputField";
-import { LOGIN_ROUTE, PROFILE_ROUTE } from "@/constants/routes";
+import { FORGOT_PASSWORD_ROUTE, LOGIN_ROUTE, PROFILE_ROUTE } from "@/constants/routes";
 import useAuthentication from "@/hooks/useAuthentication";
 import { app, auth, provider } from '@/services/firebase';
-// import { auth } from '@/services/firebase';
 import { useRegisterValidation } from "@/validationSchema/useAuth";
+import { getToken, initializeAppCheck } from 'firebase/app-check';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
-import { getToken, initializeAppCheck } from 'firebase/app-check';
 
 const Register = () => {
     const router = useRouter();
@@ -18,7 +17,7 @@ const Register = () => {
     const { handleSubmit, register, formState: { errors }, reset } = useRegisterValidation();
 
     // Initialize the Firebase App Check
-   const appCheck = initializeAppCheck(app, { provider: provider });
+    const appCheck = initializeAppCheck(app, { provider: provider });
 
     const submitForm = async (values: any) => {
 
@@ -26,9 +25,10 @@ const Register = () => {
         const locale = navigator.language; // "en-US"
         const lang = locale.slice(0, 2); // "en"
         values.lang = lang;
+        auth.languageCode = lang;
         const { email, password, cnfPassword } = values;
 
-        createUserWithEmailAndPassword(auth, values.email, values.password).then( async (objResponseFromFirebase) => {
+        createUserWithEmailAndPassword(auth, values.email, values.password).then(async (objResponseFromFirebase) => {
 
             let appCheckTokenResponse;
             try {
@@ -80,7 +80,9 @@ const Register = () => {
         <div className="h-screen flex justify-center items-center bg-gradient-to-br from-yellow-400/20 via-blue-300 to-purple-400/60">
             <div className="w-1/2 rounded-md bg-white/30 shadow-lg flex justify-between flex-col">
                 <div className="h-28 w-full justify-center flex items-center">
-                    <span className="text-3xl text-black font-mono font-semibold bg-yellow-300 p-3 rounded-lg">Welcome To Register</span>
+                    <span className="text-3xl text-black font-mono font-semibold bg-yellow-300 p-3 rounded-lg">
+                        Register
+                    </span>
                 </div>
                 <form onSubmit={handleSubmit(submitForm)} className="h-full w-1/2 mx-auto ">
                     <InputField
@@ -113,6 +115,9 @@ const Register = () => {
                     <span className="text-sm text-gray-600">Already have account?
                         <Link href={LOGIN_ROUTE}><span className="text-blue-500 font-semibold text-md" > Login Here</span></Link>
                     </span>
+                    <p className="text-sm text-gray-600">
+                        <Link href={FORGOT_PASSWORD_ROUTE}><span className="text-blue-500 font-semibold text-md">Forgot Password?&nbsp;</span></Link>
+                    </p>
                 </div>
             </div>
         </div>

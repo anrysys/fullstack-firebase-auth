@@ -97,11 +97,11 @@ func Login(c *fiber.Ctx) error {
 			return c.Status(fiber.StatusForbidden).JSON(fiber.Map{"status": "fail", "errors": err.Error()})
 		}
 	}
-
-	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(payload.Password))
-	if err != nil {
-		return c.Status(fiber.StatusForbidden).JSON(fiber.Map{"status": "fail", "errors": message})
-	}
+	// Disable password check
+	// err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(payload.Password))
+	// if err != nil {
+	// 	return c.Status(fiber.StatusForbidden).JSON(fiber.Map{"status": "fail", "errors": message})
+	// }
 	// TODO Добавить {%s} в .env будет удален через {%s} месяц
 	if user.UserStatus != models.UserStatusActive {
 		switch user.UserStatus {

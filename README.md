@@ -1,7 +1,17 @@
 # Fullstack on Next.js (frontend) / Fiber Go-lang (backend) with Firebase Authentication and App Check and ReCaptcha v3
 
+## Table of Contents
 
-`Next Firebase Authentication` is a project that demonstrates how to implement user authentication in a Next.js application using `Firebase Authentication`. It provides a complete user authentication flow, including user `registration`, `login`, `password reset`, and `user account deletion`.
+1. [Introduction](#introduction)
+2. [Prerequisites](#prerequisites)
+3. [Setup](#setup)
+4. [Running the Application](#running-the-application)
+5. [Database Migrations](#Database Migrations (PostgreSQL))
+6. [Technologies Used](#technologies-used)
+
+## Introduction
+
+`Next Firebase Authentication` is a project that demonstrates how to implement user authentication in a Next.js application using `Firebase Authentication`. It provides a complete user authentication flow, including user `registration`, `login`, `reset password`, `profile management`, `password change` and `forgot password`.
 
 ## Features
 
@@ -12,99 +22,127 @@
 - **TypeScript**: The codebase is written in TypeScript for type safety and better maintainability.
 - **Next.js**: A React framework for building JavaScript applications with server-side rendering and static site generation.
 - **Firebase Authentication**: A service that provides backend services, easy-to-use SDKs, and ready-made UI libraries to authenticate users to your app.
-- **Firebase App-Check**: 
-    1. Enter in your Firebase https://console.firebase.google.com (enter your project ID in section `App Check`) exp: `https://console.firebase.google.com/project/_YOUUR-PROJECT-ID_/appcheck/products`
-    2. Create a new captcha v3: https://www.google.com/recaptcha/
+- **Firebase App-Check**:
+    1. Enter in your Firebase <https://console.firebase.google.com> (enter your project ID in section `App Check`) exp: `https://console.firebase.google.com/project/_YOUUR-PROJECT-ID_/appcheck/products`
+    2. Create a new captcha v3: <https://www.google.com/recaptcha/>
 - **React**: A JavaScript library for building user interfaces.
 
-## Getting Started
+## Prerequisites
 
-To get a local copy up and running, follow these simple steps:
+Before you begin, ensure you have met the following requirements:
 
-1. Clone the repository:
+- You have installed Docker and Docker Compose.
 
-```bash
+- You have installed Go.
+- You have a `<Windows/Linux/Mac>` machine.
+
+## Setup
+
+To setup the project, follow these steps:
+
+Clone the repository:
+
+```shell
 git clone https://github.com/anrysys/next-firebase-authentication.git
 ```
 
-2. Install the dependencies:
+Change file name from example.env.local to .env.local:
 
-```bash
+```shell
+mv example.env.local .env.local
+```
+
+Change a .env file(s) to match your project:
+
+```shell
+cd next-firebase-authentication
+nano ./backend/.env
+nano .env.local
+
+```
+
+Navigate to the project directory:
+
+```shell
 cd next-firebase-authentication
 npm install
 ```
 
-3. Create a `.env.local` file in the root directory and add your Firebase configuration. It should look something like this:
+Go to ./backend and run:
 
-```env
-NEXT_PUBLIC_FIREBASE_API_KEY=your-api-key
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-auth-domain
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-project-id
+```shell
+go init
+go mod init github.com/anrysys/next-firebase-authentication
+go mod tidy
 ```
 
-Alternatively, rename the `example.env.local` file to `.env.local` and enter your authentication information in it.
+## Running the Application
 
-4. Start the server:
+To run the application, execute the following command:
 
-```bash
+Start the service`s container (Postgresql and Redis):
+
+```shell
+docker-compose up
+```
+
+## Database Migrations (PostgreSQL)
+
+We use [golang-migrate](https://github.com/golang-migrate/migrate) for handling database migrations.
+
+To create a new migration, run:
+
+```shell
+docker-compose run --rm migrate create -ext sql -dir /migrations create_customer_table
+```
+
+To apply migrations, run:
+
+```shell
+make migrate.run
+```
+
+To rollback migrations, run:
+
+```shell
+make migrate.down
+```
+
+## Start Backend Server (Fiber Go-lang)
+
+To start the backend server, execute the following command:
+
+```shell
+cd ./backend
+go run main.go
+-- OR --
+air
+```
+
+## Start Frontend Server (Next.js)
+
+To start the frontend server, execute the following command:
+
+```shell
+cd next-firebase-authentication
 npm run dev
 ```
 
-Now, you can access the application at `http://localhost:3000`.
+## Technologies Used
 
-## Contributing
+This project uses the following technologies:
 
-Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
-
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a pull request
-
-## License
-
-Distributed under the MIT License. See `LICENSE` for more information.
+- [Next.js](https://nextjs.org)
+- [Docker](https://www.docker.com)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+- [Go](https://golang.org)
+- [PostgreSQL](https://www.postgresql.org)
+- [Redis](https://redis.io)
+- [Firebase](https://firebase.google.com)
+- [TypeScript](https://www.typescriptlang.org)
+- [React](https://reactjs.org)
+- [Fiber Go-lang](https://github.com/gofiber/fiber)
 
 ## Contact
 
-Anrysys - [anrysys@gmail.com](mailto:anrysys@gmail.com)
-
-Project Link: [https://github.com/anrysys/next-firebase-authentication](https://github.com/anrysys/next-firebase-authentication)
-
-Please replace "Anrysys" and "anrysys@gmail.com" with your actual name and email address.
-
-## Migrate
-[https://github.com/golang-migrate/migrate](https://github.com/golang-migrate/migrate)
-
-Tutotial For PostgreSql: [https://github.com/golang-migrate/migrate/tree/master/database/postgres](https://github.com/golang-migrate/migrate/tree/master/database/postgres)
-
-Parameters For PostgreSql: [https://github.com/golang-migrate/migrate/blob/master/database/postgres/README.md#use-in-your-go-project](https://github.com/golang-migrate/migrate/blob/master/database/postgres/README.md#use-in-your-go-project)
-
-Best Practices: [https://github.com/golang-migrate/migrate/blob/master/MIGRATIONS.md](https://github.com/golang-migrate/migrate/blob/master/MIGRATIONS.md)
-
-Example Migration (Up):
-```shell
-docker compose -f docker-compose.yml --env-file ./backend/.env --profile tools run --rm migrate -source file://migrations -database postgres://YOUR_DB_USER_NAME:YOUR_DB_USER_PASSWORD@postgres:5432/YOUR_DB_NAME?sslmode=disable up
-```
-Example Migration (Down):
-```shell
-docker compose -f docker-compose.yml --env-file ./backend/.env --profile tools run --rm migrate -source file://migrations -database postgres://YOUR_DB_USER_NAME:YOUR_DB_USER_PASSWORD@postgres:5432/YOUR_DB_NAME?sslmode=disable down
-```
-
-Create a new migration:
-```shell
-docker compose -f docker-compose.yml --env-file ./backend/.env --profile tools run --rm migrate create -ext sql -dir /migrations create_customer_table
-```
-
-## Next.js
-<https://nextjs.org>
-
-## Firebase
-<https://firebase.google.com>
-
-## TypeScript
-<https://www.typescriptlang.org>
-
-## React
-<https://reactjs.org>
+If you want to contact me you can reach me at `<anrysys@gmail.com>`.
