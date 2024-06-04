@@ -6,8 +6,11 @@
 2. [Prerequisites](#prerequisites)
 3. [Setup](#setup)
 4. [Running the Application](#running-the-application)
-5. [Database Migrations](#Database Migrations (PostgreSQL))
-6. [Technologies Used](#technologies-used)
+5. [Database Migrations (PostgreSQL)](#database-migrations-postgresql)
+6. [Start Backend Server (Fiber Go-lang)](#start-backend-server-fiber-go-lang)
+7. [Start Frontend Server (NextJs)](#start-frontend-server-nextjs)
+8. [Technologies Used](#technologies-used)
+9. [Contact](#contact)
 
 ## Introduction
 
@@ -23,8 +26,8 @@
 - **Next.js**: A React framework for building JavaScript applications with server-side rendering and static site generation.
 - **Firebase Authentication**: A service that provides backend services, easy-to-use SDKs, and ready-made UI libraries to authenticate users to your app.
 - **Firebase App-Check**:
-    1. Enter in your Firebase <https://console.firebase.google.com> (enter your project ID in section `App Check`) exp: `https://console.firebase.google.com/project/_YOUUR-PROJECT-ID_/appcheck/products`
-    2. Create a new captcha v3: <https://www.google.com/recaptcha/>
+  - Enter in your Firebase <https://console.firebase.google.com> (enter your project ID in section `App Check`) exp: `https://console.firebase.google.com/project/_YOUUR-PROJECT-ID_/appcheck/products`
+  - Create a new captcha v3: <https://www.google.com/recaptcha/>
 - **React**: A JavaScript library for building user interfaces.
 
 ## Prerequisites
@@ -40,35 +43,34 @@ Before you begin, ensure you have met the following requirements:
 
 To setup the project, follow these steps:
 
-Clone the repository:
+1. Clone the repository:
 
 ```shell
 git clone https://github.com/anrysys/next-firebase-authentication.git
 ```
 
-Change file name from example.env.local to .env.local:
+2. Change file name from example.env.local to .env.local:
 
 ```shell
 mv example.env.local .env.local
 ```
 
-Change a .env file(s) to match your project:
+3. Change a .env file(s) to match your project:
 
 ```shell
 cd next-firebase-authentication
 nano ./backend/.env
 nano .env.local
-
 ```
 
-Navigate to the project directory:
+4. Navigate to the project directory:
 
 ```shell
 cd next-firebase-authentication
 npm install
 ```
 
-Go to ./backend and run:
+5. Go to ./backend and run:
 
 ```shell
 go init
@@ -119,7 +121,7 @@ go run main.go
 air
 ```
 
-## Start Frontend Server (Next.js)
+## Start Frontend Server (NextJs)
 
 To start the frontend server, execute the following command:
 
