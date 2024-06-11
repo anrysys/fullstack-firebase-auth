@@ -29,6 +29,7 @@ func Setup(micro *fiber.App) {
 		router.Post("/login", controllers.Login)
 		router.Get("/logout", middleware.Auth, controllers.Logout)
 		router.Get("/refresh", controllers.RefreshAccessToken)
+		router.Post("/login-socials", controllers.LoginSocials)
 	})
 
 	micro.Get("/users/me", middleware.Auth, controllers.GetMe)

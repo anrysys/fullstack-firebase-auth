@@ -105,14 +105,15 @@ lang.init.all:
 # Tutorials: https://github.com/golang-migrate/migrate/blob/master/database/postgres/TUTORIAL.md
 # Parameters: https://github.com/golang-migrate/migrate/tree/master/database/postgres
 #
-# make migrate.create create_posts_table
+# make migrate.create name=create_posts_table
 # make migrate up 
 # make migrate up 2	# Run 2 migrations
 # make migrate down 1	# Rollback 1 migration
 # make migrate.force 20210901123456_create_posts_table
 # 
 migrate.create:
-	migrate create -ext sql -dir $(MIGRATIONS_FOLDER) $@
+	migrate create -ext sql -dir $(MIGRATIONS_FOLDER) $(name)
+# migrate create -ext sql -dir ./backend/platform/migrations NAME
 
 ## Run migrations UP/DOWN with ARGS (make migrate up 2 or make migrate down 1)
 ARGS = $(filter-out $@,$(MAKECMDGOALS))
@@ -121,8 +122,10 @@ migrate.run:
 	@:
 
 ## Run migrations FORCE
+# make migrate.force v=20240610070532
 migrate.force:
-	$(DOCKER_RUN_COMMAND) migrate force $@
+	$(DOCKER_RUN_COMMAND) migrate -source file://migrations -database postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:$(POSTGRES_PORT)/$(POSTGRES_DB)?sslmode=$(POSTGRES_SSL_MODE) force $(v)
+# docker compose -f docker-compose.yml --env-file ./backend/.env --profile tools run --rm migrate -source file://migrations -database postgres://yoko:8cC8900ac3a46a3cx4e1e1e64ce7492c4180e5@postgres:5432/yoko?sslmode=disable force 20240610070532	
 
 shell.db:
 	docker compose -f $(DOCKER_COMPOSE_FILE) exec postgres psql -U $(POSTGRES_USER) -d $(POSTGRES_DB)

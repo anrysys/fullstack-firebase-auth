@@ -49,19 +49,16 @@ func Register(c *fiber.Ctx) error {
 
 	short_name := randomString(0)
 	newUser := models.User{
-		ShortName:     short_name,
-		Email:         &email,
-		UserStatus:    models.UserStatusActive,
-		UserRole:      models.UserRoleCustomer,
-		EmailVerified: false,
-		FirebaseUID:   payload.FirebaseUID,
-		FirstName:     payload.FirstName,
-		LastName:      payload.LastName,
-		PhoneCode:     payload.PhoneCode,
-		PhoneNumber:   payload.PhoneNumber,
-		Password:      password,
-		Photo:         payload.Photo,
-		Lang:          payload.Lang,
+		ShortName:   short_name,
+		Email:       &email,
+		UserStatus:  models.UserStatusActive,
+		UserRole:    models.UserRoleCustomer,
+		FirstName:   payload.FirstName,
+		LastName:    payload.LastName,
+		PhoneNumber: payload.PhoneNumber,
+		Password:    password,
+		Photo:       payload.Photo,
+		Lang:        payload.Lang,
 	}
 
 	result := db.Create(&newUser)
@@ -120,6 +117,135 @@ func Login(c *fiber.Ctx) error {
 	return CreateTokenForUser(c, user)
 }
 
+func LoginSocials(c *fiber.Ctx) error {
+	db := connect.GetDatabase()
+	var payload *models.UserSocialRequest
+
+	if err := c.BodyParser(&payload); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "fail", "errors": err.Error()})
+	}
+
+	errors := models.ValidateStruct(payload)
+	if errors != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"status": "fail", "errors": errors})
+
+	}
+	email := strings.ToLower(payload.Email)
+
+	// If user NOT exists (by email) in table users, create new user in table users and in table user_socials
+	// Create Full Schema: users -> user_socials
+	var user models.User
+	err := db.First(&user, "email = ?", email).Error
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			// Create new user
+			newUser := models.User{
+				FirebaseUid: payload.FirebaseUid,
+				ProviderId:  payload.ProviderId,
+				ShortName:   payload.Username,
+				Email:       &payload.Email,
+				UserStatus:  models.UserStatusActive,
+				UserRole:    models.UserRoleCustomer,
+				PhoneNumber: payload.PhoneNumber,
+				Photo:       payload.PhotoUrl,
+				Lang:        payload.Lang,
+			}
+			result := db.Create(&newUser)
+			if result.Error != nil && strings.Contains(result.Error.Error(), "duplicate key value violates unique") {
+				return c.Status(fiber.StatusConflict).JSON(fiber.Map{"status": "fail", "errors": handlers.L("UserEmailExist", c)})
+			} else if result.Error != nil {
+				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "errors": handlers.L("SometingWentWrongServer", c)})
+			}
+
+			newUserSocial := models.UserSocial{
+				UserID:        newUser.ID,
+				FirebaseUid:   payload.FirebaseUid,
+				ProviderId:    payload.ProviderId,
+				Email:         &payload.Email,
+				TenantId:      &payload.TenantId,
+				EmailVerified: payload.EmailVerified,
+				PhoneNumber:   payload.PhoneNumber,
+				IsAnonymous:   payload.IsAnonymous,
+				Username:      payload.Username,
+				PhotoUrl:      payload.PhotoUrl,
+				ProviderData:  payload.ProviderData,
+			}
+			result = db.Create(&newUserSocial)
+			if result.Error != nil {
+				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "errors": handlers.L("SometingWentWrongServer", c)})
+			}
+
+			// Update users table (columns: user_social_id, firebase_uid, provider_id)
+			result = db.Model(&user).Where("user_id = ?", newUser.ID).Updates(models.User{
+				UserSocialID: *newUserSocial.ID,
+				FirebaseUid:  payload.FirebaseUid,
+				ProviderId:   payload.ProviderId,
+				ShortName:    payload.Username,
+				PhoneNumber:  payload.PhoneNumber,
+				Photo:        payload.PhotoUrl,
+				Lang:         payload.Lang,
+			})
+
+			if result.Error != nil {
+				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "errors": result.Error.Error()})
+			}
+
+			return CreateTokenForUser(c, newUser)
+		} else {
+			return c.Status(fiber.StatusForbidden).JSON(fiber.Map{"status": "fail", "errors": err.Error()})
+		}
+	}
+
+	// If user exists, check if user_socials exists
+	// If the entry is missing, create a new entry in the user_socials table with the data
+	// from the query and update the entry in the users table (columns: user_social_id, firebase_uid, provider_id)
+	err = db.Joins("JOIN user_socials ON users.user_id = user_socials.user_id").First(&user, "users.email = ? AND user_socials.firebase_uid = ? AND user_socials.provider_id = ?", email, payload.FirebaseUid, payload.ProviderId).Error
+	if err != nil {
+		// If user_socials not exists, create new user_socials record with data from request
+		if err == gorm.ErrRecordNotFound {
+			newUserSocial := models.UserSocial{
+				UserID:        user.ID,
+				FirebaseUid:   payload.FirebaseUid,
+				ProviderId:    payload.ProviderId,
+				Email:         &payload.Email,
+				TenantId:      &payload.TenantId,
+				EmailVerified: payload.EmailVerified,
+				PhoneNumber:   payload.PhoneNumber,
+				IsAnonymous:   payload.IsAnonymous,
+				Username:      payload.Username,
+				PhotoUrl:      payload.PhotoUrl,
+				ProviderData:  payload.ProviderData,
+			}
+			result := db.Create(&newUserSocial)
+			if result.Error != nil {
+				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "errors": handlers.L("SometingWentWrongServer", c)})
+			}
+
+			// Update users table (columns: user_social_id, firebase_uid, provider_id)
+			result = db.Model(&user).Updates(models.User{
+				UserSocialID: *newUserSocial.ID,
+				FirebaseUid:  payload.FirebaseUid,
+				ProviderId:   payload.ProviderId,
+				ShortName:    payload.Username,
+				PhoneNumber:  payload.PhoneNumber,
+				Photo:        payload.PhotoUrl,
+				Lang:         payload.Lang,
+			})
+			if result.Error != nil {
+				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "errors": result.Error.Error()})
+			}
+
+		} else {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"status": "fail", "errors": err.Error()})
+		}
+	}
+
+	// Create token
+	return CreateTokenForUser(c, user)
+
+}
+
+// Logout user with a system and delete token from redis
 func Logout(c *fiber.Ctx) error {
 	ctx := context.TODO()
 	access_token_uuid := c.Locals("access_token_uuid").(string)

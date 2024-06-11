@@ -3,7 +3,7 @@ import SubmitButton from "@/components/Button";
 import InputField from "@/components/InputField";
 import { FORGOT_PASSWORD_ROUTE, REGISTER_ROUTE } from "@/constants/routes";
 import useAuthentication from "@/hooks/useAuthentication";
-import { app, auth, provider } from '@/services/firebase';
+import { app, auth, providers } from '@/services/firebase';
 import { useForgotPasswordValidation } from "@/validationSchema/useAuth";
 import { getToken, initializeAppCheck } from 'firebase/app-check';
 import { sendPasswordResetEmail } from "firebase/auth";
@@ -16,7 +16,7 @@ const ForgotPassword = () => {
     useAuthentication();
 
     // Initialize the Firebase App Check
-    const appCheck = initializeAppCheck(app, { provider: provider });
+    const appCheck = initializeAppCheck(app, { provider: providers.reCaptchProvider });
 
     const submitForm = async (values: any) => {
 

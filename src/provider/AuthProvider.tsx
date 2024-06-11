@@ -10,26 +10,26 @@ type UserT = {
     isLogin: boolean
 }
 
-const AuthProvider = ({children}:any) =>{
+const AuthProvider = ({ children }: any) => {
     const [loading, setLoading] = useState<boolean>(true)
     const initialState = {
-        user:null,
-        isLogin:false
+        user: null,
+        isLogin: false
     }
     const [user, setUser] = useState<UserT>(initialState);
 
-    useEffect(()=>{
-        const subscribe = auth.onAuthStateChanged((userState)=>{
-            setUser({isLogin: userState ? true : false, user: userState});
+    useEffect(() => {
+        const subscribe = auth.onAuthStateChanged((userState) => {
+            setUser({ isLogin: userState ? true : false, user: userState });
             setLoading(false);
         });
         return subscribe;
-    },[])
+    }, [])
 
     // console.log("User State ",user.user)
 
     return (
-        <Context.Provider value={{user,setUser}}>
+        <Context.Provider value={{ user, setUser }}>
             {loading && (<div className="h-screen flex w-full justify-center items-center">Loading...</div>)}
             {!loading && children}
         </Context.Provider>

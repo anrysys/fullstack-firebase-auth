@@ -10,6 +10,7 @@ import (
 
 type Config struct {
 	AppName        string `mapstructure:"APP_NAME"`
+	Protocol       string `mapstructure:"PROTOCOL"`
 	Host           string `mapstructure:"HOST"`
 	Port           string `mapstructure:"PORT"`
 	ClientOrigin   string `mapstructure:"CLIENT_ORIGIN"`
@@ -22,6 +23,10 @@ type Config struct {
 	DBSslMode      string `mapstructure:"POSTGRES_SSL_MODE"`
 	TimeZone       string `mapstructure:"TIMEZONE"`
 	ServerPort     string `mapstructure:"SERVER_PORT"`
+	ClientPort     string `mapstructure:"CLIENT_PORT"`
+	RedisHost      string `mapstructure:"REDIS_HOST"`
+	RedisPort      string `mapstructure:"REDIS_PORT"`
+	RedisDB        int    `mapstructure:"REDIS_DB"`
 
 	RedisUri string `mapstructure:"REDIS_URL"`
 

@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { ReCaptchaV3Provider } from "firebase/app-check";
-import { getAuth } from "firebase/auth";
+import { EmailAuthProvider, FacebookAuthProvider, GithubAuthProvider, GoogleAuthProvider, TwitterAuthProvider, getAuth } from "firebase/auth";
 
 // !!! IMPORTANT !!!
 // !Add secret key (in field 'SECRET KEY': ************ ) to project settings in Firebase Console https://console.firebase.google.com/project/YOUR-PROJECT/appcheck/apps
@@ -27,10 +27,19 @@ const app = initializeApp(firebaseConfig);
 // Get a reference to the auth service
 const auth = getAuth(app);
 
-// Initialize the reCAPTCHA v3 provider
-const provider = new ReCaptchaV3Provider(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string);
+// Initialize providers
+const providers = {
+  emailAuthProvider: new EmailAuthProvider(),
+  reCaptchProvider: new ReCaptchaV3Provider(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string),
+  googleProvider: new GoogleAuthProvider(),
+  facebookProvider: new FacebookAuthProvider(),
+  twitterProvider: new TwitterAuthProvider(),
+  githubProvider: new GithubAuthProvider(),
+};
 
 // Get a reference to the Firestore service
-//const db = getFirestore(app);
+// const db = getFirestore(app);
 
-export { app, auth, provider };
+// Get a reference to the storage service, which is used to create references in your storage bucket
+export { app, auth, providers };
+

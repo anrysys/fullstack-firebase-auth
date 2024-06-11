@@ -1,6 +1,6 @@
 {
-  "name": "fullstack-firebase-authentication",
-  "version": "0.1.0",
+  "name": "yoko-app",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -23,6 +23,7 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@firebase/auth-types": "^0.12.2",
     "@types/body-parser": "^1.19.5",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.12.12",

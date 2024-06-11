@@ -1,7 +1,7 @@
 "use client";
 import { HOME_ROUTE, LOGIN_ROUTE, PROFILE_ROUTE, REGISTER_ROUTE } from "@/constants/routes";
 import { AuthContext } from "@/provider/AuthProvider";
-import { app, auth, provider } from '@/services/firebase';
+import { app, auth, providers } from '@/services/firebase';
 import { signOut } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -15,13 +15,12 @@ const Header = () => {
     const logOut = () => {
 
         // Initialize the Firebase App Check
-        const appCheck = initializeAppCheck(app, { provider: provider });
+        const appCheck = initializeAppCheck(app, { provider: providers.reCaptchProvider});
 
         // Sign out the user
         signOut(auth).then(async () => {
 
             const firebase_app_check_token = await getToken(appCheck);
-            // console.log("Logout ", firebase_app_check_token);
 
             // Send the request to server to logout the user
             const response = await fetch('/api/auth/logout', {

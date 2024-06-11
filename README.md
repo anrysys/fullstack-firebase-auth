@@ -44,7 +44,7 @@ Before you begin, ensure you have met the following requirements:
 
 To setup the project, follow these steps:
 
-1. Clone the repository:
+1. Clone the repository
 
 ```shell
 git clone https://github.com/anrysys/next-firebase-authentication.git
@@ -63,6 +63,15 @@ cd next-firebase-authentication
 nano ./backend/.env
 nano .env.local
 ```
+
+Attention! It is mandatory to change in the `./backend/.env` file all the values for the keys:
+
+- `ACCESS_TOKEN_PRIVATE_KEY=INSERT NEW PRIVATE KEY HERE`
+- `ACCESS_TOKEN_PUBLIC_KEY=INSERT NEW PUBLIC KEY HERE`
+- `REFRESH_TOKEN_PRIVATE_KEY=INSERT NEW PRIVATE KEY HERE`
+- `REFRESH_TOKEN_PUBLIC_KEY=INSERT NEW PUBLIC KEY HERE`
+
+To do this, you need to generate an RSA key pair (4096 is recommended, but you can use 1024 or 2048, which will decrease security but save a bit on traffic). You can generate new keys using utilities such as OpenSSL or ssh-keygen, or online at: <https://it-tools.tech/rsa-key-pair-generator>
 
 4. Navigate to the project directory:
 
@@ -86,8 +95,7 @@ To run the application, execute the following command:
 Start the service`s container (Postgresql and Redis):
 
 ```shell
-cd next-firebase-authentication
-make docker.start
+docker-compose up
 ```
 
 ## Database Migrations (PostgreSQL)
